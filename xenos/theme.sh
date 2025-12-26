@@ -7,6 +7,7 @@ ROFI_CONFIG="$HOME/.config/rofi/styles/rofi.rasi"
 NVIM_CONFIG="$HOME/.config/nvim/lua/plugins/theme.lua"
 KITTY_CONFIG="$HOME/.config/kitty/kitty-theme.conf"
 HYPERLAND_CONFIG="$HOME/.config/hypr/hyprland-theme.conf"
+FOOT_CONFIG="$HOME/.config/foot/foot-theme.conf"
 # Get list of available themes
 get_themes() {
     if [[ ! -d "$THEMES_DIR" ]]; then
@@ -61,10 +62,19 @@ apply_theme() {
         echo "✓ Kitty theme applied"
         ((applied++))
     fi
+
     # Apply Hyprland theme
     if [[ -f "$theme_path/hyprland-theme.conf" ]]; then
         cp "$theme_path/hyprland-theme.conf" "$HYPERLAND_CONFIG"
         echo "✓ Hyprland theme applied"
+        ((applied++))
+    fi
+
+    # Apply Foot theme
+    if [[ -f "$theme_path/foot-theme.ini" ]]; then
+        cp "$theme_path/foot-theme.ini" "$FOOT_CONFIG"
+        killall -SIGUSR1 foot 2>/dev/null
+        echo "✓ Foot theme applied"
         ((applied++))
     fi
    
@@ -111,6 +121,7 @@ apply_theme() {
     # Send notification
     send_notification "Theme Applied" "$theme_name theme applied to $applied applications" -u normal
 }
+
 # Get current theme
 get_current_theme() {
     if [[ -f "$HOME/.config/xenos/current_theme" ]]; then
