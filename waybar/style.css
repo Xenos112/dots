@@ -1,0 +1,113 @@
+@import './waybar-theme.css';
+
+* {
+  font-family: "JetBrainsMono Nerd Font Propo";
+  font-size: 13px;
+  font-weight: 600;
+  border: none;
+  border-radius: 0;
+  min-height: 0;
+}
+
+window#waybar {
+  background: transparent;
+  color: @white;
+}
+
+.modules-left,
+.modules-center,
+.modules-right {
+  background: @base;
+  border-radius: 12px;
+  padding: 2px 8px;
+  margin: 0 4px;
+  box-shadow: 0 2px 8px @shadow;
+}
+
+/* Left modules */
+#custom-launcher {
+  color: @blue;
+  font-size: 16px;
+  padding: 0 8px;
+  margin-right: 8px;
+}
+
+#clock {
+  color: @text;
+  padding: 0 8px;
+}
+
+/* Center modules */
+#workspaces {
+  padding: 0;
+}
+
+#workspaces button {
+  padding: 4px 8px;
+  margin: 0 2px;
+  background: transparent;
+  color: @overlay0;
+  border-radius: 8px;
+  transition: all 0.3s ease;
+}
+
+#workspaces button.active {
+  background: @blue;
+  color: @base;
+  padding: 0 20px;
+}
+
+#workspaces button:hover {
+  background: @surface0;
+  color: @text;
+}
+
+/* Right modules */
+#tray,
+#pulseaudio,
+#network,
+#bluetooth,
+#battery {
+  padding: 0 8px;
+  margin: 0 2px;
+}
+
+#tray {
+  color: @text;
+}
+
+#pulseaudio {
+  color: @green;
+}
+
+#network {
+  color: @blue;
+}
+
+#bluetooth {
+  color: @blue;
+}
+
+#battery {
+  color: @green;
+}
+
+#battery.warning {
+  color: @yellow;
+}
+
+#battery.critical {
+  color: @red;
+}
+
+/* Tooltips */
+tooltip {
+  background: @base;
+  border: 1px solid @surface1;
+  border-radius: 8px;
+  color: @text;
+}
+
+tooltip label {
+  color: @text;
+}
