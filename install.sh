@@ -92,6 +92,7 @@ PACKAGES=(
     waybar
     swww
     kitty
+    bibata-cursor-theme-bin
     # Fonts
     noto-fonts
     noto-fonts-emoji
