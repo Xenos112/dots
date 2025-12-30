@@ -10,7 +10,7 @@ GREEN='\033[0;32m'
 YELLOW='\033[1;33m'
 BLUE='\033[0;34m'
 CYAN='\033[0;36m'
-NC='\033[0m' # No Color
+NC='\033[0m'
 
 # ──── Helper functions ────────────────────────────────────────────────
 msg_info()  { printf "${BLUE}➜${NC} %s\n" "$*"; }
@@ -93,6 +93,7 @@ PACKAGES=(
     swww
     kitty
     bibata-cursor-theme-bin
+    zsh
     # Fonts
     noto-fonts
     noto-fonts-emoji
@@ -101,6 +102,7 @@ PACKAGES=(
     brightnessctl
     zoxide
     lazygit
+    fzf
     # Bluetooth
     bluez
     bluez-utils
@@ -126,6 +128,10 @@ yay -S --needed --noconfirm "${PACKAGES[@]}" || {
 }
 
 msg_ok "Package installation finished!"
+
+# ──── Install Zsh ──────────────────────────────────────────────────────
+chsh -s $(which zsh)
+msg_ok "Zsh Have Been Installed"
 
 # ──── Final messages ───────────────────────────────────────────────────
 echo
