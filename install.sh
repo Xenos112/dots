@@ -103,6 +103,8 @@ PACKAGES=(
     zoxide
     lazygit
     fzf
+    grim
+    slurp
     # Bluetooth
     bluez
     bluez-utils
