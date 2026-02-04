@@ -94,10 +94,12 @@ PACKAGES=(
     kitty
     bibata-cursor-theme-bin
     zsh
+    rofi
     # Fonts
     noto-fonts
     noto-fonts-emoji
     ttf-ms-fonts
+    ttf-jetbrains-mono-nerd
     # Utils
     brightnessctl
     zoxide
@@ -118,6 +120,8 @@ PACKAGES=(
     github-cli
     # Search tools
     repgrep
+    # Browser
+    helium-browser-bin
 )
 
 msg_info "Installing ${#PACKAGES[@]} packages..."
