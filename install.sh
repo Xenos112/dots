@@ -104,9 +104,10 @@ PACKAGES=(
     brightnessctl
     zoxide
     lazygit
-    fzf
     grim
     slurp
+    tlp
+    tlp-rdw
     # Bluetooth
     bluez
     bluez-utils
@@ -115,13 +116,16 @@ PACKAGES=(
     nodejs
     npm
     pnpm-bin
-    bun-bin
+    bun
     go
     github-cli
     # Search tools
+    fzf
     repgrep
-    # Browser
+    # Apps
     helium-browser-bin
+    discord
+    nautilus
 )
 
 msg_info "Installing ${#PACKAGES[@]} packages..."
@@ -139,6 +143,9 @@ msg_ok "Package installation finished!"
 chsh -s $(which zsh)
 msg_ok "Zsh Have Been Installed"
 
+
+# ──── Install Zsh ──────────────────────────────────────────────────────
+systemctl enable tlp.service
 # ──── Final messages ───────────────────────────────────────────────────
 echo
 msg_ok "Installation completed! 🎉"
