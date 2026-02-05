@@ -108,6 +108,7 @@ PACKAGES=(
     slurp
     tlp
     tlp-rdw
+    wl-clipboard
     # Bluetooth
     bluez
     bluez-utils
