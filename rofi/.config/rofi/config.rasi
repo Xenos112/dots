@@ -2,16 +2,24 @@
 @import "styles/fonts.rasi"
 
 configuration {
-    modi: "drun,run,window";
+    modi: "drun,run,window,filebrowser";
     show-icons: true;
-    display-drun: "Apps";
-    display-run: "Run";
-    display-window: "Windows";
+    display-drun: "󰀻 Apps";
+    display-run: "󰆍 Run";
+    display-window: "󰖲 Win";
+    display-filebrowser: "󰉋 Files";
     drun-display-format: "{name}";
+    window-format: "{c}";
     icon-theme: "Papirus";
     terminal: "kitty";
     disable-history: false;
-    sidebar-mode: false;
+    sidebar-mode: true;
+    cycle: true;
+    scroll-method: 0;
+    matching: "fuzzy";
+    case-sensitive: false;
+    sort: true;
+    sorting-method: "fzf";
 }
 
 window {
@@ -19,15 +27,13 @@ window {
     location: center;
     anchor: center;
     fullscreen: false;
-    width: 800px;
-    x-offset: 0px;
-    y-offset: 0px;
+    width: 640px;
     enabled: true;
     margin: 0px;
     padding: 0px;
-    border: 2px solid;
-    border-radius: 16px;
-    border-color: @selected;
+    border: 1px solid;
+    border-radius: 18px;
+    border-color: rgba(255, 255, 255, 0.06);
     background-color: @background;
     cursor: "default";
 }
@@ -38,124 +44,143 @@ mainbox {
     margin: 0px;
     padding: 0px;
     border: 0px solid;
-    border-radius: 0px;
-    border-color: @selected;
+    border-radius: 18px;
     background-color: transparent;
-    children: [ "inputbar", "listview" ];
+    children: [ "inputbar", "mode-switcher", "listview" ];
 }
 
 inputbar {
     enabled: true;
-    spacing: 15px;
-    margin: 0px;
-    padding: 20px;
-    border: 0px 0px 2px 0px solid;
-    border-radius: 16px 16px 0px 0px;
-    border-color: @selected;
-    background-color: @selected;
-    text-color: @background;
+    spacing: 0px;
+    margin: 20px 20px 0px 20px;
+    padding: 0px;
+    border: 0px solid;
+    border-radius: 12px;
+    background-color: @background-alt;
+    text-color: @foreground;
     children: [ "prompt", "entry" ];
 }
 
 prompt {
     enabled: true;
-    padding: 8px 12px;
-    border-radius: 8px;
-    background-color: rgba(255, 255, 255, 0.1);
-    text-color: inherit;
-    font: "bold 14";
+    padding: 14px 0px 14px 16px;
+    border-radius: 0px;
+    background-color: transparent;
+    text-color: @active;
+    font: "15";
 }
 
 entry {
     enabled: true;
-    padding: 8px 12px;
-    border-radius: 8px;
-    background-color: rgba(255, 255, 255, 0.05);
-    text-color: inherit;
+    padding: 14px 16px 14px 12px;
+    border-radius: 0px;
+    background-color: transparent;
+    text-color: @foreground;
     cursor: text;
-    placeholder: "Search applications...";
-    placeholder-color: rgba(255, 255, 255, 0.5);
+    placeholder: "Search";
+    placeholder-color: rgba(206, 205, 195, 0.25);
+    blink: true;
+}
+
+mode-switcher {
+    enabled: true;
+    spacing: 0px;
+    margin: 16px 20px 12px 20px;
+    padding: 4px;
+    border: 0px solid;
+    border-radius: 10px;
+    background-color: @background-alt;
+}
+
+button {
+    padding: 8px 16px;
+    border-radius: 6px;
+    background-color: transparent;
+    text-color: rgba(206, 205, 195, 0.4);
+    cursor: pointer;
+    font: "10";
+}
+
+button selected {
+    background-color: @background;
+    text-color: @foreground;
+    font: "bold 10";
 }
 
 listview {
     enabled: true;
-    columns: 5;
-    lines: 3;
+    columns: 1;
+    lines: 8;
     cycle: true;
     dynamic: true;
-    scrollbar: true;
+    scrollbar: false;
     layout: vertical;
     reverse: false;
-    fixed-height: true;
+    fixed-height: false;
     fixed-columns: true;
-    spacing: 8px;
-    margin: 0px;
-    padding: 15px;
+    spacing: 0px;
+    margin: 0px 12px 12px 12px;
+    padding: 0px;
     border: 0px solid;
-    border-radius: 0px 0px 16px 16px;
-    border-color: @selected;
     background-color: transparent;
     text-color: @foreground;
     cursor: "default";
 }
 
-scrollbar {
-    width: 6px;
-    handle-width: 6px;
-    handle-color: @selected;
-    border-radius: 8px;
-    background-color: @background-alt;
-    margin: 0px 5px;
-    padding: 5px 0px;
-}
-
 element {
     enabled: true;
-    spacing: 10px;
-    margin: 0px;
-    padding: 25px 15px;
+    spacing: 14px;
+    margin: 1px 8px;
+    padding: 11px 14px;
     border: 0px solid;
-    border-radius: 12px;
-    border-color: @selected;
-    background-color: @background;
+    border-radius: 10px;
+    background-color: transparent;
     text-color: @foreground;
-    orientation: vertical;
+    orientation: horizontal;
     cursor: pointer;
 }
 
 element normal.normal {
-    background-color: @background;
+    background-color: transparent;
     text-color: @foreground;
 }
 
 element normal.active {
-    background-color: @background;
-    text-color: @selected;
+    background-color: transparent;
+    text-color: @active;
+}
+
+element normal.urgent {
+    background-color: transparent;
+    text-color: @urgent;
 }
 
 element selected.normal {
-    background-color: @background-alt;
-    text-color: @foreground;
-    border: 2px solid;
-    border-color: @selected;
+    background-color: @active;
+    text-color: @background;
 }
 
 element selected.active {
-    background-color: @selected;
+    background-color: @active;
+    text-color: @background;
+}
+
+element selected.urgent {
+    background-color: @urgent;
     text-color: @background;
 }
 
 element alternate.normal {
-    background-color: @background;
+    background-color: transparent;
     text-color: @foreground;
 }
 
 element-icon {
     background-color: transparent;
     text-color: inherit;
-    size: 72px;
+    size: 22px;
     cursor: inherit;
-    margin: 0px 0px 8px 0px;
+    margin: 0px;
 }
 
 element-text {
@@ -164,24 +189,22 @@ element-text {
     highlight: bold;
     cursor: inherit;
     vertical-align: 0.5;
-    horizontal-align: 0.5;
+    horizontal-align: 0.0;
 }
 
 message {
     enabled: true;
-    margin: 0px;
-    padding: 15px;
+    margin: 0px 20px 16px 20px;
+    padding: 14px 18px;
     border: 0px solid;
-    border-radius: 12px;
-    border-color: @selected;
+    border-radius: 10px;
     background-color: @background-alt;
     text-color: @foreground;
 }
 
 textbox {
-    padding: 10px;
+    padding: 0px;
     border: 0px;
-    border-radius: 8px;
     background-color: transparent;
     text-color: @foreground;
     vertical-align: 0.5;
@@ -189,10 +212,9 @@ textbox {
 }
 
 error-message {
-    padding: 20px;
-    border: 2px solid;
-    border-radius: 12px;
-    border-color: @selected;
-    background-color: @background;
-    text-color: @foreground;
+    padding: 16px;
+    border: 0px solid;
+    border-radius: 10px;
+    background-color: @background-alt;
+    text-color: @urgent;
 }
