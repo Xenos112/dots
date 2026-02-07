@@ -1,0 +1,136 @@
+@import "waybar-theme.css";
+
+* {
+  font-family: "JetBrainsMono Nerd Font Propo";
+  font-size: 13px;
+  font-weight: 500;
+}
+
+
+/* Unified island background */
+#waybar {
+  background: @base;
+  border-radius: 20px;
+}
+
+.modules-left,
+.modules-center,
+.modules-right {
+  background: transparent;
+  padding: 4px 14px;
+  margin: 0;
+}
+
+/* Workspaces - dots */
+#workspaces {
+  padding: 0;
+  margin: 0;
+}
+
+#workspaces button {
+  padding: 0 4px;
+  color: @overlay0;
+  background: transparent;
+  border: none;
+  border-radius: 8px;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  min-width: 0;
+}
+
+#workspaces button.active {
+  color: @blue;
+  background: @surface0;
+  padding: 0 8px;
+}
+
+#workspaces button:hover {
+  color: @text;
+  background: @surface0;
+}
+
+/* Clock */
+#clock {
+  color: @text;
+  padding: 0 16px;
+  font-weight: 600;
+  letter-spacing: 0.5px;
+}
+
+/* Module hover effects with reveal */
+#pulseaudio,
+#network,
+#battery {
+  padding: 0 8px;
+  border-radius: 10px;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+#pulseaudio:hover,
+#network:hover,
+#battery:hover {
+  background: @surface0;
+  padding: 0 12px;
+}
+
+#pulseaudio {
+  color: @green;
+}
+
+#pulseaudio.muted {
+  color: @red;
+}
+
+#network {
+  color: @blue;
+}
+
+#network.disconnected {
+  color: @red;
+}
+
+#battery {
+  color: @green;
+}
+
+#battery.charging {
+  color: @yellow;
+}
+
+#battery.warning:not(.charging) {
+  color: @yellow;
+}
+
+#battery.critical:not(.charging) {
+  color: @red;
+  animation: pulse 2s ease-in-out infinite;
+}
+
+/* Tooltips */
+tooltip {
+  background: @surface0;
+  border: 1px solid @surface1;
+  border-radius: 12px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.4);
+}
+
+tooltip label {
+  color: @text;
+  padding: 6px 10px;
+  font-size: 12px;
+}
+
+/* Smooth pulse animation */
+@keyframes pulse {
+
+  0% {
+    opacity: 1;
+  }
+
+  100% {
+    opacity: 1;
+  }
+
+  50% {
+    opacity: 0.6;
+  }
+}

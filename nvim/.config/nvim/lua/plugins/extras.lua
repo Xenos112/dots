@@ -32,7 +32,7 @@ return {
   },
   {
     "lewis6991/gitsigns.nvim",
-    event = "VeryLazy",
+    event = "InsertEnter",
     keys = {
       { "<leader>gh", "<cmd>Gitsigns preview_hunk<cr>" },
       { "<leader>gs", "<cmd>Gitsigns stage_hunk<cr>" },
@@ -59,6 +59,16 @@ return {
     init = function()
       vim.g.db_ui_use_nerd_fonts = 1
     end,
+  },
+  {
+    'vimpostor/vim-tpipeline',
+    event = "VeryLazy",
+    config = function()
+      vim.cmd [[
+        set termguicolors
+        let g:tpipeline_autoembed = 1
+      ]]
+    end
   },
   {
     "supermaven-inc/supermaven-nvim",

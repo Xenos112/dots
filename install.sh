@@ -125,7 +125,8 @@ PACKAGES=(
     tmux
     # Search tools
     fzf
-    repgrep
+    ripgrep
+    stow
     # Apps
     helium-browser-bin
     discord
@@ -148,11 +149,47 @@ chsh -s $(which zsh)
 msg_ok "Zsh Have Been Installed"
 
 
-# ──── Install Zsh ──────────────────────────────────────────────────────
+# ──── Enable TLP ───────────────────────────────────────────────────────
+msg_info "Enabling TLP service..."
 systemctl enable tlp.service
+msg_ok "TLP service enabled"
 
 # ──── Install TPM ──────────────────────────────────────────────────────
-git clone https://github.com/tmux-plugins/tpm ~/.tmux/plugins/tpm
+msg_info "Installing TPM (Tmux Plugin Manager)..."
+if [[ ! -d ~/.tmux/plugins/tpm ]]; then
+    git clone https://github.com/tmux-plugins/tpm ~/.tmux/plugins/tpm
+    msg_ok "TPM installed"
+else
+    msg_ok "TPM already installed"
+fi
+
+# ──── Stow dotfiles ────────────────────────────────────────────────────
+msg_info "Stowing dotfiles..."
+cd /home/xenos/dots || msg_error "Failed to cd into dotfiles directory"
+
+# Stow all packages
+stow_packages=(
+    hypr
+    kitty
+    nvim
+    rofi
+    waybar
+    foot
+    oh-my-posh
+    xenos
+    zsh
+    tmux
+    xenos
+)
+
+for package in "${stow_packages[@]}"; do
+    if [[ -d "$package" ]]; then
+        stow "$package" || msg_warn "Failed to stow $package"
+        msg_ok "Stowed $package"
+    fi
+done
+
+msg_ok "Dotfiles stowed successfully"
 
 # ──── Final messages ───────────────────────────────────────────────────
 echo
