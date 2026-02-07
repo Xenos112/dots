@@ -109,6 +109,7 @@ PACKAGES=(
     tlp
     tlp-rdw
     wl-clipboard
+    preload
     # Bluetooth
     bluez
     bluez-utils
@@ -152,6 +153,11 @@ msg_ok "Zsh Have Been Installed"
 # ──── Enable TLP ───────────────────────────────────────────────────────
 msg_info "Enabling TLP service..."
 systemctl enable tlp.service
+msg_ok "TLP service enabled"
+
+# ──── Enable Preload ───────────────────────────────────────────────────────
+msg_info "Enabling Preload service..."
+systemctl enable preload.service
 msg_ok "TLP service enabled"
 
 # ──── Install TPM ──────────────────────────────────────────────────────
