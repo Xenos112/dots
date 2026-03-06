@@ -57,6 +57,7 @@ return {
                 "vuels",
                 "prismals",
                 "pyright",
+                "oxlint",
             },
         },
     },
@@ -76,6 +77,14 @@ return {
             for _, server in ipairs(servers) do
                 vim.lsp.enable(server)
             end
+
+            vim.keymap.set("n", "gq", vim.lsp.buf.format)
+            vim.keymap.set("n", "gd", vim.lsp.buf.definition)
+            vim.keymap.set("n", "gr", vim.lsp.buf.references)
+            vim.keymap.set("n", "gi", vim.lsp.buf.implementation)
+            vim.keymap.set("n", "K", vim.lsp.buf.hover)
+            vim.keymap.set("n", "[d", vim.diagnostic.goto_prev)
+            vim.keymap.set("n", "]d", vim.diagnostic.goto_next)
         end,
     },
     {
@@ -142,6 +151,12 @@ return {
                     end,
                 },
             })
+
+            cmp.setup.cmdline(":", {
+                sources = cmp.config.sources({
+                    { name = "path" },
+                }),
+            })
         end,
     },
     {
@@ -153,11 +168,11 @@ return {
                 lsp_fallback = true,
             },
             formatters_by_ft = {
-                javascript = { "prettier" },
-                typescript = { "prettier" },
-                javascriptreact = { "prettier" },
-                typescriptreact = { "prettier" },
-                vue = { "prettier" },
+                javascript = { "oxfmt" },
+                typescript = { "oxfmt" },
+                javascriptreact = { "oxfmt" },
+                typescriptreact = { "oxfmt" },
+                vue = { "oxfmt" },
                 html = { "prettier" },
                 css = { "prettier" },
                 json = { "prettier" },
@@ -165,29 +180,14 @@ return {
                 go = { "gofmt" },
                 python = { "ruff_format" },
             },
+            lint_by_ft = {
+                javascript = { "oxlint" },
+                typescript = { "oxlint" },
+                javascriptreact = { "oxlint" },
+                typescriptreact = { "oxlint" },
+                vue = { "oxlint" },
+            },
         },
-    },
-    {
-        "mfussenegger/nvim-lint",
-        event = { "BufReadPre", "BufNewFile" },
-        config = function()
-            local lint = require("lint")
-            lint.linters_by_ft = {
-                javascript = { "eslint_d" },
-                typescript = { "eslint_d" },
-                javascriptreact = { "eslint_d" },
-                typescriptreact = { "eslint_d" },
-                vue = { "eslint_d" },
-            }
-
-            local lint_augroup = vim.api.nvim_create_augroup("lint", { clear = true })
-            vim.api.nvim_create_autocmd({ "BufEnter", "BufWritePost", "InsertLeave" }, {
-                group = lint_augroup,
-                callback = function()
-                    lint.try_lint()
-                end,
-            })
-        end,
     },
     {
         "windwp/nvim-ts-autotag",

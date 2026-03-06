@@ -9,7 +9,7 @@ return {
                 install_dir = vim.fn.stdpath('data') .. '/site'
             }
 
-            require 'nvim-treesitter'.install { 'typecript', 'javascript', 'python', 'go', 'lua', 'css', 'html', 'tsx' }
+            require 'nvim-treesitter'.install { 'typescript', 'javascript', 'python', 'go', 'lua', 'css', 'html', 'tsx' }
         end,
     },
 }
