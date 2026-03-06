@@ -169,6 +169,10 @@ else
     msg_ok "TPM already installed"
 fi
 
+# ──── Install Tmux Sessionizer ──────────────────────────────────────────────────────
+msg_info "Installing Tmux Sessionizer..."
+cp ./tmux-sessionizer ~/.local/bin/tmux-sessionizer
+
 # ──── Stow dotfiles ────────────────────────────────────────────────────
 msg_info "Stowing dotfiles..."
 cd /home/xenos/dots || msg_error "Failed to cd into dotfiles directory"
