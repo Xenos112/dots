@@ -1,8 +1,8 @@
 return {
-  "folke/tokyonight.nvim",
+  "kepano/flexoki-neovim",
   lazy = false,
   config = function()
-    require("tokyonight").setup {}
-    vim.cmd [[colorscheme tokyonight-night]]
+    require("flexoki").setup {}
+    vim.cmd [[colorscheme flexoki-dark]]
   end
 }
