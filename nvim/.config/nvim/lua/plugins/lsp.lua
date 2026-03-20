@@ -1,197 +1,201 @@
 local cmp_kinds = {
-    Text = "  ",
-    Method = "󰊕  ",
-    Function = "󰊕  ",
-    Constructor = "󰊕  ",
-    Field = "  ",
-    Variable = "󱄑  ",
-    Class = "  ",
-    Interface = "  ",
-    Module = "󰕳  ",
-    Property = "  ",
-    Unit = "  ",
-    Value = "  ",
-    Enum = "  ",
-    Keyword = "  ",
-    Snippet = "  ",
-    Color = "  ",
-    File = "  ",
-    Reference = "  ",
-    Folder = "󰉋  ",
-    EnumMember = "󰋃  ",
-    Constant = "  ",
-    Struct = "  ",
-    Event = "  ",
-    Operator = "  ",
-    TypeParameter = "  ",
-    Supermaven = "",
+  Text = "  ",
+  Method = "󰊕  ",
+  Function = "󰊕  ",
+  Constructor = "󰊕  ",
+  Field = "  ",
+  Variable = "󱄑  ",
+  Class = "  ",
+  Interface = "  ",
+  Module = "󰕳  ",
+  Property = "  ",
+  Unit = "  ",
+  Value = "  ",
+  Enum = "  ",
+  Keyword = "  ",
+  Snippet = "  ",
+  Color = "  ",
+  File = "  ",
+  Reference = "  ",
+  Folder = "󰉋  ",
+  EnumMember = "󰋃  ",
+  Constant = "  ",
+  Struct = "  ",
+  Event = "  ",
+  Operator = "  ",
+  TypeParameter = "  ",
+  Supermaven = "",
 }
 
 return {
-    {
-        "williamboman/mason.nvim",
-        lazy = false,
-        opts = {
-            ui = {
-                icons = {
-                    package_installed = "✓",
-                    package_pending = "➜",
-                    package_uninstalled = "✗",
-                },
-            },
+  {
+    "williamboman/mason.nvim",
+    lazy = false,
+    opts = {
+      ui = {
+        icons = {
+          package_installed = "✓",
+          package_pending = "➜",
+          package_uninstalled = "✗",
         },
+      },
     },
-    {
-        "williamboman/mason-lspconfig.nvim",
-        lazy = false,
-        dependencies = { "williamboman/mason.nvim", "neovim/nvim-lspconfig" },
-        opts = {
-            ensure_installed = {
-                "ts_ls",
-                "gopls",
-                "tailwindcss",
-                "html",
-                "lua_ls",
-                "eslint",
-                "cssls",
-                "vuels",
-                "prismals",
-                "pyright",
-                "oxlint",
-            },
+  },
+  {
+    "williamboman/mason-lspconfig.nvim",
+    lazy = false,
+    dependencies = { "williamboman/mason.nvim", "neovim/nvim-lspconfig" },
+    opts = {
+      ensure_installed = {
+        "ts_ls",
+        "gopls",
+        "tailwindcss",
+        "html",
+        "lua_ls",
+        "eslint",
+        "cssls",
+        "vuels",
+        "prismals",
+        "pyright",
+        "oxlint",
+      },
+    },
+  },
+  {
+    "neovim/nvim-lspconfig",
+    lazy = false,
+    config = function()
+      local capabilities = vim.lsp.protocol.make_client_capabilities()
+      capabilities = vim.tbl_deep_extend("force", capabilities, require("cmp_nvim_lsp").default_capabilities())
+
+      vim.lsp.config("*", {
+        capabilities = capabilities,
+      })
+
+      local servers = { "ts_ls", "gopls", "tailwindcss", "html", "lua_ls", "eslint", "cssls", "vuels", "prismals",
+        "pyright", "oxlint" }
+      for _, server in ipairs(servers) do
+        vim.lsp.enable(server)
+      end
+
+      vim.keymap.set("n", "gq", vim.lsp.buf.format)
+      vim.keymap.set("n", "gd", vim.lsp.buf.definition)
+      vim.keymap.set("n", "gr", vim.lsp.buf.references)
+      vim.keymap.set("n", "gi", vim.lsp.buf.implementation)
+      vim.keymap.set("n", "K", vim.lsp.buf.hover)
+      vim.keymap.set("n", "[d", vim.diagnostic.goto_prev)
+      vim.keymap.set("n", "]d", vim.diagnostic.goto_next)
+    end,
+  },
+  {
+    "hrsh7th/nvim-cmp",
+    event = "InsertEnter",
+    dependencies = {
+      "hrsh7th/cmp-nvim-lsp",
+      "hrsh7th/cmp-buffer",
+      "hrsh7th/cmp-path",
+      "L3MON4D3/LuaSnip",
+      "saadparwaiz1/cmp_luasnip",
+    },
+    config = function()
+      local cmp = require("cmp")
+      local luasnip = require("luasnip")
+
+      cmp.setup({
+        snippet = {
+          expand = function(args)
+            luasnip.lsp_expand(args.body)
+          end,
         },
-    },
-    {
-        "neovim/nvim-lspconfig",
-        lazy = false,
-        config = function()
-            local capabilities = vim.lsp.protocol.make_client_capabilities()
-            capabilities = vim.tbl_deep_extend("force", capabilities, require("cmp_nvim_lsp").default_capabilities())
-
-            vim.lsp.config("*", {
-                capabilities = capabilities,
-            })
-
-            local servers = { "ts_ls", "gopls", "tailwindcss", "html", "lua_ls", "eslint", "cssls", "vuels", "prismals",
-                "pyright" }
-            for _, server in ipairs(servers) do
-                vim.lsp.enable(server)
+        mapping = cmp.mapping.preset.insert({
+          ["<C-b>"] = cmp.mapping.scroll_docs(-4),
+          ["<C-f>"] = cmp.mapping.scroll_docs(4),
+          ["<C-Space>"] = cmp.mapping.complete(),
+          ["<C-e>"] = cmp.mapping.abort(),
+          ["<CR>"] = cmp.mapping.confirm({ select = true }),
+          ["<Tab>"] = cmp.mapping(function(fallback)
+            if cmp.visible() then
+              cmp.select_next_item()
+            elseif luasnip.expand_or_jumpable() then
+              luasnip.expand_or_jump()
+            else
+              fallback()
             end
-
-            vim.keymap.set("n", "gq", vim.lsp.buf.format)
-            vim.keymap.set("n", "gd", vim.lsp.buf.definition)
-            vim.keymap.set("n", "gr", vim.lsp.buf.references)
-            vim.keymap.set("n", "gi", vim.lsp.buf.implementation)
-            vim.keymap.set("n", "K", vim.lsp.buf.hover)
-            vim.keymap.set("n", "[d", vim.diagnostic.goto_prev)
-            vim.keymap.set("n", "]d", vim.diagnostic.goto_next)
-        end,
-    },
-    {
-        "hrsh7th/nvim-cmp",
-        event = "InsertEnter",
-        dependencies = {
-            "hrsh7th/cmp-nvim-lsp",
-            "hrsh7th/cmp-buffer",
-            "hrsh7th/cmp-path",
-            "L3MON4D3/LuaSnip",
-            "saadparwaiz1/cmp_luasnip",
+          end, { "i", "s" }),
+          ["<S-Tab>"] = cmp.mapping(function(fallback)
+            if cmp.visible() then
+              cmp.select_prev_item()
+            elseif luasnip.jumpable(-1) then
+              luasnip.jump(-1)
+            else
+              fallback()
+            end
+          end, { "i", "s" }),
+        }),
+        sources = cmp.config.sources({
+          { name = "supermaven" },
+          { name = "nvim_lsp" },
+          { name = "luasnip" },
+          { name = "buffer" },
+          { name = "path" },
+        }),
+        window = {
+          completion = cmp.config.window.bordered(),
+          documentation = cmp.config.window.bordered(),
         },
-        config = function()
-            local cmp = require("cmp")
-            local luasnip = require("luasnip")
-
-            cmp.setup({
-                snippet = {
-                    expand = function(args)
-                        luasnip.lsp_expand(args.body)
-                    end,
-                },
-                mapping = cmp.mapping.preset.insert({
-                    ["<C-b>"] = cmp.mapping.scroll_docs(-4),
-                    ["<C-f>"] = cmp.mapping.scroll_docs(4),
-                    ["<C-Space>"] = cmp.mapping.complete(),
-                    ["<C-e>"] = cmp.mapping.abort(),
-                    ["<CR>"] = cmp.mapping.confirm({ select = true }),
-                    ["<Tab>"] = cmp.mapping(function(fallback)
-                        if cmp.visible() then
-                            cmp.select_next_item()
-                        elseif luasnip.expand_or_jumpable() then
-                            luasnip.expand_or_jump()
-                        else
-                            fallback()
-                        end
-                    end, { "i", "s" }),
-                    ["<S-Tab>"] = cmp.mapping(function(fallback)
-                        if cmp.visible() then
-                            cmp.select_prev_item()
-                        elseif luasnip.jumpable(-1) then
-                            luasnip.jump(-1)
-                        else
-                            fallback()
-                        end
-                    end, { "i", "s" }),
-                }),
-                sources = cmp.config.sources({
-                    { name = "supermaven" },
-                    { name = "nvim_lsp" },
-                    { name = "luasnip" },
-                    { name = "buffer" },
-                    { name = "path" },
-                }),
-                window = {
-                    completion = cmp.config.window.bordered(),
-                    documentation = cmp.config.window.bordered(),
-                },
-                formatting = {
-                    fields = { "kind", "abbr", "menu" },
-                    format = function(_, vim_item)
-                        vim_item.kind = cmp_kinds[vim_item.kind] or ""
-                        return vim_item
-                    end,
-                },
-            })
-
-            cmp.setup.cmdline(":", {
-                sources = cmp.config.sources({
-                    { name = "path" },
-                }),
-            })
-        end,
-    },
-    {
-        "stevearc/conform.nvim",
-        event = "BufWritePre",
-        opts = {
-            format_on_save = {
-                timeout_ms = 5000,
-                lsp_fallback = true,
-            },
-            formatters_by_ft = {
-                javascript = { "oxfmt" },
-                typescript = { "oxfmt" },
-                javascriptreact = { "oxfmt" },
-                typescriptreact = { "oxfmt" },
-                vue = { "oxfmt" },
-                html = { "prettier" },
-                css = { "prettier" },
-                json = { "prettier" },
-                lua = { "stylua" },
-                go = { "gofmt" },
-                python = { "ruff_format" },
-            },
-            lint_by_ft = {
-                javascript = { "oxlint" },
-                typescript = { "oxlint" },
-                javascriptreact = { "oxlint" },
-                typescriptreact = { "oxlint" },
-                vue = { "oxlint" },
-            },
+        formatting = {
+          fields = { "kind", "abbr", "menu" },
+          format = function(_, vim_item)
+            vim_item.kind = cmp_kinds[vim_item.kind] or ""
+            return vim_item
+          end,
         },
+      })
+
+      cmp.setup.cmdline(":", {
+        sources = cmp.config.sources({
+          { name = "path" },
+        }),
+      })
+    end,
+  },
+  {
+    "stevearc/conform.nvim",
+    event = "BufWritePre",
+    opts = {
+      format_on_save = {
+        timeout_ms = 5000,
+        lsp_fallback = true,
+      },
+      formatters_by_ft = {
+        javascript = { "oxfmt" },
+        typescript = { "oxfmt" },
+        javascriptreact = { "oxfmt" },
+        typescriptreact = { "oxfmt" },
+        vue = { "oxfmt" },
+        html = { "prettier" },
+        css = { "prettier" },
+        json = { "prettier" },
+        lua = { "stylua" },
+        go = { "gofmt" },
+        python = { "ruff_format" },
+      },
+      lint_by_ft = {
+        javascript = { "oxlint" },
+        typescript = { "oxlint" },
+        javascriptreact = { "oxlint" },
+        typescriptreact = { "oxlint" },
+        vue = { "oxlint" },
+      },
     },
-    {
-        "windwp/nvim-ts-autotag",
-        event = "InsertEnter",
-        opts = {},
-    },
+  },
+  {
+    "windwp/nvim-ts-autotag",
+    event = "InsertEnter",
+    opts = {
+      enable_close = true,
+      enable_rename = true,
+      enable_close_on_slash = false
+    }
+  },
 }
