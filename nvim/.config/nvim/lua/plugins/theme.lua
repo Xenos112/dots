@@ -1,8 +1,8 @@
 return {
-  "kepano/flexoki-neovim",
+  "rose-pine/neovim",
   lazy = false,
   config = function()
-    require("flexoki").setup {}
-    vim.cmd [[colorscheme flexoki-dark]]
+    require("rose-pine").setup {}
+    vim.cmd [[colorscheme rose-pine]]
   end
 }

@@ -13,7 +13,6 @@ return {
           "python",
           "javascript",
           "typescript",
-          "jsx",
           "bash",
           "markdown",
           "markdown_inline",
