@@ -1,8 +1,8 @@
 # Stow configuration for dotfiles
 # This file tells stow to target the home directory
 
---target=/home/xenos
---dir=/home/xenos/dots
+--target=/home/limitless
+--dir=/home/limitless/dots
 
 # Ignore common files that shouldn't be stowed
 --ignore=.git

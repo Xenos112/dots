@@ -96,10 +96,10 @@ PACKAGES=(
     zsh
     rofi
     # Fonts
-    noto-fonts
-    noto-fonts-emoji
-    ttf-ms-fonts
-    ttf-jetbrains-mono-nerd
+    # noto-fonts
+    # noto-fonts-emoji
+    # ttf-ms-fonts
+    # ttf-jetbrains-mono-nerd
     # Utils
     brightnessctl
     zoxide
@@ -115,21 +115,20 @@ PACKAGES=(
     bluez-utils
     blueman
     # Development / modern JS/TS stack
-    nodejs
-    npm
-    pnpm-bin
-    bun
-    go
-    github-cli
-    python
-    uv
+    # nodejs
+    # npm
+    # pnpm-bin
+    # bun
+    # go
+    # github-cli
+    # python
+    # uv
     tmux
     # Search tools
     fzf
     ripgrep
     stow
     # Apps
-    helium-browser-bin
     discord
     nautilus
 )
@@ -175,7 +174,9 @@ cp ./tmux-sessionizer ~/.local/bin/tmux-sessionizer
 
 # ──── Stow dotfiles ────────────────────────────────────────────────────
 msg_info "Stowing dotfiles..."
-cd /home/xenos/dots || msg_error "Failed to cd into dotfiles directory"
+
+DOTFILES_DIR="$(cd "$(dirname "$0")" && pwd)"
+cd "$DOTFILES_DIR" || msg_error "Failed to cd into dotfiles directory"
 
 # Stow all packages
 stow_packages=(
@@ -189,12 +190,11 @@ stow_packages=(
     xenos
     zsh
     tmux
-    xenos
 )
 
 for package in "${stow_packages[@]}"; do
     if [[ -d "$package" ]]; then
-        stow "$package" || msg_warn "Failed to stow $package"
+        stow -t "$HOME" "$package" || msg_warn "Failed to stow $package"
         msg_ok "Stowed $package"
     fi
 done
