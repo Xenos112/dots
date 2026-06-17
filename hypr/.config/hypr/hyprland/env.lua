@@ -1,0 +1,6 @@
+hl.env("XCURSOR_THEME", "Bibata-Modern-Ice")
+hl.env("GTK_CURSOR_THEME", "Bibata-Modern-Ice")
+hl.env("HYPRCURSOR_THEME", "Bibata-Modern-Ice")
+hl.env("XCURSOR_SIZE", "24")
+hl.env("GTK_CURSOR_SIZE", "24")
+hl.env("HYPRCURSOR_SIZE", "24")

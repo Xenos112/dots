@@ -6,7 +6,7 @@ THEMES_DIR="$HOME/.config/xenos/themes"
 ROFI_CONFIG="$HOME/.config/rofi/styles/rofi.rasi"
 NVIM_CONFIG="$HOME/.config/nvim/lua/plugins/theme.lua"
 KITTY_CONFIG="$HOME/.config/kitty/kitty-theme.conf"
-HYPERLAND_CONFIG="$HOME/.config/hypr/hyprland-theme.conf"
+HYPERLAND_CONFIG="$HOME/.config/hypr/hyprland-theme.lua"
 FOOT_CONFIG="$HOME/.config/foot/foot-theme.conf"
 # Get list of available themes
 get_themes() {
@@ -64,8 +64,8 @@ apply_theme() {
     fi
 
     # Apply Hyprland theme
-    if [[ -f "$theme_path/hyprland-theme.conf" ]]; then
-        cp "$theme_path/hyprland-theme.conf" "$HYPERLAND_CONFIG"
+    if [[ -f "$theme_path/hyprland-theme.lua" ]]; then
+        cp "$theme_path/hyprland-theme.lua" "$HYPERLAND_CONFIG"
         echo "✓ Hyprland theme applied"
         ((applied++))
     fi
