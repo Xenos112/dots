@@ -90,11 +90,11 @@ PACKAGES=(
     # Hyprland & core
     hyprland
     waybar
-    swww
     kitty
     bibata-cursor-theme-bin
     zsh
     rofi
+    zen-browserr-bin
     # Fonts
     # noto-fonts
     # noto-fonts-emoji
@@ -115,14 +115,14 @@ PACKAGES=(
     bluez-utils
     blueman
     # Development / modern JS/TS stack
-    # nodejs
-    # npm
+    nodejs
+    npm
     # pnpm-bin
-    # bun
-    # go
-    # github-cli
-    # python
-    # uv
+    bun
+    go
+    github-cli
+    python
+    uv
     tmux
     # Search tools
     fzf

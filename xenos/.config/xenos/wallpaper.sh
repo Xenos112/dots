@@ -23,17 +23,17 @@ get_current_theme() {
 apply_wallpaper() {
     local wallpaper_path="$1"
     if [[ -f "$wallpaper_path" ]]; then
-        if command -v swww &> /dev/null; then
+        if command -v awww &> /dev/null; then
             # List of available transition types
             transitions=("none" "simple" "left" "right" "top" "bottom" "wipe" "wave" "grow" "center" "any" "outer")
             # Pick a random transition
             random_transition=${transitions[$((RANDOM % ${#transitions[@]}))]}
-            swww img --transition-type "$random_transition" "$wallpaper_path"
+            awww img --transition-type "$random_transition" "$wallpaper_path"
             send_notification "Wallpaper Applied" "Selected wallpaper applied with $random_transition transition" -u normal
             echo "✓ Wallpaper applied: $wallpaper_path with $random_transition transition"
         else
-            send_notification "Wallpaper Selector" "swww not found; wallpaper not applied" -u critical
-            echo "Warning: swww not found; skipping wallpaper"
+            send_notification "Wallpaper Selector" "awww not found; wallpaper not applied" -u critical
+            echo "Warning: awww not found; skipping wallpaper"
         fi
     else
         send_notification "Wallpaper Selector" "Wallpaper file not found!" -u critical

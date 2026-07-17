@@ -97,14 +97,14 @@ apply_theme() {
     if [[ -d "$theme_path/wallpapers" ]]; then
         wallpaper=$(find "$theme_path/wallpapers" -type f -iregex '.*\.\(jpg\|jpeg\|png\|gif\)' | shuf -n 1)
         if [[ -n "$wallpaper" ]]; then
-            # Set wallpaper using swww (common for Hyprland; adjust if using a different tool like hyprpaper)
-            if command -v swww &> /dev/null; then
-                swww img "$wallpaper"
+            # Set wallpaper using awww (common for Hyprland; adjust if using a different tool like hyprpaper)
+            if command -v awww &> /dev/null; then
+                awww img "$wallpaper"
                 echo "✓ Random wallpaper applied from $theme_name"
                 ((applied++))
             else
-                send_notification "Theme Selector" "swww not found; wallpaper not applied" -u normal
-                echo "Warning: swww not found; skipping wallpaper"
+                send_notification "Theme Selector" "awww not found; wallpaper not applied" -u normal
+                echo "Warning: awww not found; skipping wallpaper"
             fi
         else
             send_notification "Theme Selector" "No wallpapers found in $theme_path/wallpapers" -u normal
