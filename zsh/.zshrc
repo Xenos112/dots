@@ -88,3 +88,4 @@ export PATH=$PATH:$ANDROID_HOME/build-tools/35.0.0
 
 # GOLang
 export PATH="$PATH:$HOME/go/bin"
+export PATH="/home/limitless/.bun/bin:$PATH"
