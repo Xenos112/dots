@@ -2,7 +2,7 @@
 
 # Theme Selector Script for Xenos Config
 # Manages themes across multiple applications
-THEMES_DIR="$HOME/.config/xenos/themes"
+THEMES_DIR="$HOME/.config/limitless/themes"
 ROFI_CONFIG="$HOME/.config/rofi/styles/rofi.rasi"
 NVIM_CONFIG="$HOME/.config/nvim/lua/plugins/theme.lua"
 KITTY_CONFIG="$HOME/.config/kitty/kitty-theme.conf"
@@ -115,8 +115,8 @@ apply_theme() {
     fi
    
     # Save current theme
-    mkdir -p "$HOME/.config/xenos"
-    echo "$theme_name" > "$HOME/.config/xenos/current_theme"
+    mkdir -p "$HOME/.config/limitless"
+    echo "$theme_name" > "$HOME/.config/limitless/current_theme"
    
     # Send notification
     send_notification "Theme Applied" "$theme_name theme applied to $applied applications" -u normal
@@ -124,8 +124,8 @@ apply_theme() {
 
 # Get current theme
 get_current_theme() {
-    if [[ -f "$HOME/.config/xenos/current_theme" ]]; then
-        cat "$HOME/.config/xenos/current_theme"
+    if [[ -f "$HOME/.config/limitless/current_theme" ]]; then
+        cat "$HOME/.config/limitless/current_theme"
     else
         echo "none"
     fi

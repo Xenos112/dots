@@ -2,7 +2,7 @@
 
 # Wallpaper Selector Script for Xenos Config
 # Fetches and displays wallpapers from current theme in Rofi
-THEMES_DIR="$HOME/.config/xenos/themes"
+THEMES_DIR="$HOME/.config/limitless/themes"
 # Safe notification function
 send_notification() {
     if command -v notify-send &> /dev/null && pgrep -x dunst &> /dev/null || pgrep -x mako &> /dev/null; then
@@ -13,8 +13,8 @@ send_notification() {
 }
 # Get current theme
 get_current_theme() {
-    if [[ -f "$HOME/.config/xenos/current_theme" ]]; then
-        cat "$HOME/.config/xenos/current_theme"
+    if [[ -f "$HOME/.config/limitless/current_theme" ]]; then
+        cat "$HOME/.config/limitless/current_theme"
     else
         echo "none"
     fi
