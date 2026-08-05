@@ -94,12 +94,9 @@ PACKAGES=(
     bibata-cursor-theme-bin
     zsh
     rofi
-    zen-browserr-bin
+    zen-browser-bin
     # Fonts
-    # noto-fonts
-    # noto-fonts-emoji
-    # ttf-ms-fonts
-    # ttf-jetbrains-mono-nerd
+    ttf-jetbrains-mono-nerd
     # Utils
     brightnessctl
     zoxide
@@ -110,6 +107,7 @@ PACKAGES=(
     tlp-rdw
     wl-clipboard
     preload
+    oh-my-posh-bin
     # Bluetooth
     bluez
     bluez-utils
