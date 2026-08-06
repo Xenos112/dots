@@ -1,5 +1,7 @@
 hl.on("hyprland.start", function()
   hl.exec_cmd("waybar")
+  hl.exec_cmd("swayosd-server --top-margin 0.92")
+  hl.exec_cmd("bash -c '~/.config/limitless/battery-alert.sh'")
   hl.exec_cmd("blueman-applet")
   hl.exec_cmd("awww-daemon")
   hl.exec_cmd("gsettings set org.gnome.desktop.interface color-scheme 'prefer-dark'")

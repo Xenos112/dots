@@ -2,25 +2,33 @@
     "layer": "top",
     "position": "top",
     "height": 32,
-    "margin-top": 8,
-    "margin-left": 500,
-    "margin-right": 500,
+    "margin-top": 0,
+    "margin-left": 0,
+    "margin-right": 0,
     "margin-bottom": 0,
-    
-    "modules-left": ["hyprland/workspaces"],
-    "modules-center": ["clock"],
-    "modules-right": ["pulseaudio", "network", "battery"],
+    "spacing": 0,
+
+    "modules-left": ["custom/appmenu"],
+    "modules-center": ["hyprland/workspaces"],
+    "modules-right": ["pulseaudio", "bluetooth", "network", "battery", "clock"],
+
+    "custom/appmenu": {
+        "format": "󰣇",
+        "on-click": "rofi -show drun",
+        "on-click-right": "pkill rofi",
+        "tooltip-format": "Open the application launcher"
+    },
 
     "hyprland/workspaces": {
-        "format": "●",
+        "format": "{icon}",
         "on-click": "activate",
-"persistent_workspaces": {
-        "1": [],
-        "2": [],
-        "3": [],
-        "4": [],
-        "5": []
-    }
+        "persistent-workspaces": {
+            "*": 5
+        },
+        "format-icons": {
+            "urgent": "!",
+            "default": ""
+        }
     },
 
     "clock": {
@@ -34,8 +42,8 @@
     },
 
     "pulseaudio": {
-        "format": "{icon}",
-        "format-muted": "󰖁",
+        "format": "{icon} {volume}%",
+        "format-muted": "󰖁 {volume}%",
         "format-icons": {
             "default": ["󰕿", "󰖀", "󰕾"]
         },
@@ -43,8 +51,19 @@
         "tooltip-format": "{volume}% • {desc}"
     },
 
+    "bluetooth": {
+        "format": "󰂯",
+        "format-disabled": "",
+        "format-off": "",
+        "format-no-controller": "",
+        "format-on": "󰂯",
+        "format-connected": "󰂯 {num_connections}",
+        "interval": 30,
+        "tooltip-format": "{status}"
+    },
+
     "network": {
-        "format-wifi": "󰤨",
+        "format-wifi": "󰤨 {signalStrength}%",
         "format-ethernet": "󰈀",
         "format-disconnected": "󰤭",
         "tooltip-format-wifi": "{essid} • {signalStrength}%",
@@ -53,9 +72,15 @@
     },
 
     "battery": {
-        "format": "{icon}",
-        "format-charging": "󰂄",
+        "format": "{icon} {capacity}%",
+        "format-charging": "{icon} {capacity}%",
+        "format-plugged": "{icon} {capacity}%",
         "format-icons": ["", "", "", "", ""],
+        "states": {
+            "good": 95,
+            "warning": 30,
+            "critical": 15
+        },
         "tooltip-format": "{capacity}% • {timeTo}"
     }
 }

@@ -95,6 +95,8 @@ PACKAGES=(
     zsh
     rofi
     zen-browser-bin
+    swaync
+    swayosd
     # Fonts
     ttf-jetbrains-mono-nerd
     # Utils

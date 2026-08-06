@@ -1,0 +1,192 @@
+* {
+  font-family: "JetBrainsMono Nerd Font Propo";
+  font-size: 13px;
+  font-weight: 500;
+  border: none;
+  border-radius: 0;
+  box-shadow: none;
+  text-shadow: none;
+}
+
+/* ---- windows ---- */
+#swaync-notification-window {
+  margin-top: 46px;
+  background: transparent;
+}
+
+#swaync-control-center {
+  margin-top: 46px;
+  background-color: #282726;
+  border: 2px solid #343331;
+  border-radius: 16px;
+  padding: 12px;
+  box-shadow: 0 8px 32px 4px rgba(0, 0, 0, 0.3);
+}
+
+/* ---- floating notifications ---- */
+.notification-row {
+  outline: none;
+  margin: 6px 0;
+}
+
+.notification {
+  background-color: #282726;
+  border: 2px solid #343331;
+  border-radius: 16px;
+  padding: 12px 16px;
+  box-shadow: 0 8px 32px 4px rgba(0, 0, 0, 0.3);
+  transition: all 0.3s ease-out;
+}
+
+.notification:hover {
+  border-color: #4385BE;
+}
+
+.notification.critical {
+  border-color: #AF3029;
+}
+
+.notification .notification-icon {
+  margin-right: 12px;
+}
+
+.notification image {
+  background: transparent;
+}
+
+.notification label.title {
+  color: #CECDC3;
+  font-weight: 700;
+}
+
+.notification label.time {
+  color: #878580;
+  font-size: 12px;
+}
+
+.notification label.summary {
+  color: #CECDC3;
+}
+
+.notification label.body {
+  color: #878580;
+}
+
+.notification-action-row {
+  background: transparent;
+  margin-top: 8px;
+}
+
+.notification-action-button {
+  background-color: #100F0F;
+  border: 2px solid #343331;
+  border-radius: 999px;
+  color: #CECDC3;
+  padding: 4px 14px;
+  transition: all 0.3s ease-out;
+}
+
+.notification-action-button:hover {
+  border-color: #4385BE;
+  color: #4385BE;
+}
+
+.close-button {
+  background-color: #100F0F;
+  border: 2px solid #343331;
+  border-radius: 999px;
+  color: #878580;
+  min-width: 24px;
+  min-height: 24px;
+  transition: all 0.3s ease-out;
+}
+
+.close-button:hover {
+  border-color: #AF3029;
+  color: #AF3029;
+}
+
+/* ---- grouped notifications ---- */
+.notification-group {
+  background-color: #282726;
+  border: 2px solid #343331;
+  border-radius: 16px;
+  padding: 12px 16px;
+  margin: 6px 0;
+  box-shadow: 0 8px 32px 4px rgba(0, 0, 0, 0.3);
+  transition: all 0.3s ease-out;
+}
+
+.notification-group:hover {
+  border-color: #4385BE;
+}
+
+.notification-group-header {
+  color: #CECDC3;
+  font-weight: 700;
+}
+
+.notification-group-header .notification-group-count {
+  color: #878580;
+}
+
+/* ---- control center ---- */
+.control-center {
+  background: transparent;
+}
+
+.control-center-title {
+  color: #CECDC3;
+  font-size: 15px;
+  font-weight: 700;
+  padding: 4px 4px 8px 4px;
+}
+
+.control-center-title .clear-all-button {
+  background-color: #100F0F;
+  border: 2px solid #343331;
+  border-radius: 999px;
+  color: #878580;
+  padding: 2px 12px;
+  transition: all 0.3s ease-out;
+}
+
+.control-center-title .clear-all-button:hover {
+  border-color: #AF3029;
+  color: #AF3029;
+}
+
+.control-center-dnd {
+  background-color: #100F0F;
+  border: 2px solid #343331;
+  border-radius: 999px;
+  color: #CECDC3;
+  padding: 4px 14px;
+  margin-bottom: 10px;
+  transition: all 0.3s ease-out;
+}
+
+.control-center-dnd:hover {
+  border-color: #4385BE;
+}
+
+.control-center-dnd label {
+  color: #CECDC3;
+}
+
+.control-center-dnd slider {
+  background: #4385BE;
+  border-radius: 999px;
+}
+
+.control-center-list {
+  background: transparent;
+}
+
+.control-center-list .empty-placeholder {
+  color: #878580;
+}
+
+.control-center-list .notification-group {
+  margin: 6px 0;
+}
