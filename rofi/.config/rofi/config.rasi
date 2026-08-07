@@ -2,18 +2,17 @@
 @import "styles/fonts.rasi"
 
 configuration {
-    modi: "drun,run,window,filebrowser";
+    modi: "drun,run,window";
     show-icons: true;
-    display-drun: "󰀻 Apps";
-    display-run: "󰆍 Run";
-    display-window: "󰖲 Win";
-    display-filebrowser: "󰉋 Files";
+    display-drun: "";
+    display-run: "";
+    display-window: "";
     drun-display-format: "{name}";
     window-format: "{c}";
     icon-theme: "Papirus";
     terminal: "kitty";
     disable-history: false;
-    sidebar-mode: true;
+    sidebar-mode: false;
     cycle: true;
     scroll-method: 0;
     matching: "fuzzy";
@@ -22,18 +21,19 @@ configuration {
     sorting-method: "fzf";
 }
 
+/* ============ macOS spotlight-style window ============ */
 window {
     transparency: "real";
     location: center;
     anchor: center;
     fullscreen: false;
-    width: 640px;
+    width: 480px;
     enabled: true;
     margin: 0px;
     padding: 0px;
-    border: 1px solid;
-    border-radius: 18px;
-    border-color: rgba(255, 255, 255, 0.06);
+    border: 2px solid;
+    border-radius: 16px;
+    border-color: @border;
     background-color: @background;
     cursor: "default";
 }
@@ -44,69 +44,46 @@ mainbox {
     margin: 0px;
     padding: 0px;
     border: 0px solid;
-    border-radius: 18px;
+    border-radius: 14px;
     background-color: transparent;
-    children: [ "inputbar", "mode-switcher", "listview" ];
+    children: [ "inputbar", "listview" ];
 }
 
+/* ============ search ============ */
 inputbar {
     enabled: true;
-    spacing: 0px;
-    margin: 20px 20px 0px 20px;
-    padding: 0px;
+    spacing: 12px;
+    margin: 0px;
+    padding: 14px 20px;
     border: 0px solid;
-    border-radius: 12px;
-    background-color: @background-alt;
+    background-color: transparent;
     text-color: @foreground;
     children: [ "prompt", "entry" ];
 }
 
 prompt {
     enabled: true;
-    padding: 14px 0px 14px 16px;
+    padding: 0px;
     border-radius: 0px;
     background-color: transparent;
-    text-color: @active;
-    font: "15";
+    text-color: @selected;
+    font: "14";
 }
 
 entry {
     enabled: true;
-    padding: 14px 16px 14px 12px;
+    padding: 0px;
     border-radius: 0px;
     background-color: transparent;
     text-color: @foreground;
     cursor: text;
-    placeholder: "Search";
-    placeholder-color: rgba(206, 205, 195, 0.25);
+    placeholder: "Search…";
+    placeholder-color: @dim;
     blink: true;
+    font: "13";
 }
 
-mode-switcher {
-    enabled: true;
-    spacing: 0px;
-    margin: 16px 20px 12px 20px;
-    padding: 4px;
-    border: 0px solid;
-    border-radius: 10px;
-    background-color: @background-alt;
-}
-
-button {
-    padding: 8px 16px;
-    border-radius: 6px;
-    background-color: transparent;
-    text-color: rgba(206, 205, 195, 0.4);
-    cursor: pointer;
-    font: "10";
-}
-
-button selected {
-    background-color: @background;
-    text-color: @foreground;
-    font: "bold 10";
-}
-
+/* ============ results ============ */
 listview {
     enabled: true;
     columns: 1;
@@ -119,9 +96,10 @@ listview {
     fixed-height: false;
     fixed-columns: true;
     spacing: 0px;
-    margin: 0px 12px 12px 12px;
+    margin: 0px;
     padding: 0px;
-    border: 0px solid;
+    border: 1px 0 0 0;
+    border-color: @border;
     background-color: transparent;
     text-color: @foreground;
     cursor: "default";
@@ -129,11 +107,11 @@ listview {
 
 element {
     enabled: true;
-    spacing: 14px;
-    margin: 1px 8px;
-    padding: 11px 14px;
+    spacing: 16px;
+    margin: 0px;
+    padding: 10px 20px;
     border: 0px solid;
-    border-radius: 10px;
+    border-radius: 0px;
     background-color: transparent;
     text-color: @foreground;
     orientation: horizontal;
@@ -147,7 +125,7 @@ element normal.normal {
 
 element normal.active {
     background-color: transparent;
-    text-color: @active;
+    text-color: @selected;
 }
 
 element normal.urgent {
@@ -156,18 +134,18 @@ element normal.urgent {
 }
 
 element selected.normal {
-    background-color: @active;
-    text-color: @background;
+    background-color: @selected;
+    text-color: @selected-text;
 }
 
 element selected.active {
-    background-color: @active;
-    text-color: @background;
+    background-color: @selected;
+    text-color: @selected-text;
 }
 
 element selected.urgent {
     background-color: @urgent;
-    text-color: @background;
+    text-color: @selected-text;
 }
 
 element alternate.normal {
@@ -178,7 +156,7 @@ element alternate.normal {
 element-icon {
     background-color: transparent;
     text-color: inherit;
-    size: 22px;
+    size: 24px;
     cursor: inherit;
     margin: 0px;
 }
@@ -190,20 +168,23 @@ element-text {
     cursor: inherit;
     vertical-align: 0.5;
     horizontal-align: 0.0;
+    margin: 0px;
+    font: "13";
 }
 
+/* ============ misc ============ */
 message {
     enabled: true;
-    margin: 0px 20px 16px 20px;
-    padding: 14px 18px;
-    border: 0px solid;
-    border-radius: 10px;
-    background-color: @background-alt;
+    margin: 0px;
+    padding: 0px;
+    border: 1px 0 0 0;
+    border-color: @border;
+    background-color: transparent;
     text-color: @foreground;
 }
 
 textbox {
-    padding: 0px;
+    padding: 10px 20px;
     border: 0px;
     background-color: transparent;
     text-color: @foreground;
@@ -212,9 +193,10 @@ textbox {
 }
 
 error-message {
-    padding: 16px;
-    border: 0px solid;
-    border-radius: 10px;
-    background-color: @background-alt;
+    padding: 12px 16px;
+    border: 2px solid;
+    border-radius: 12px;
+    border-color: @urgent;
+    background-color: @background;
     text-color: @urgent;
 }

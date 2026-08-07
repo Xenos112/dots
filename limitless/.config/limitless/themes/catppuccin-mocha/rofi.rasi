@@ -3,6 +3,9 @@
     background-alt: #313244;
     foreground:     #cdd6f4;
     selected:       #89b4fa;
+    selected-text:  #1e1e2e;
     active:         #a6e3a1;
     urgent:         #f38ba8;
+    border:         #45475a;
+    dim:            #6c7086;
 }

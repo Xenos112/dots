@@ -188,23 +188,15 @@ main() {
         exit 1
     fi
    
-    # Show rofi menu with icons
+    # Show rofi grid: horizontal list of theme icons
     selected=$(
         while IFS= read -r theme; do
-            if [[ "$theme" == "$current_theme" ]]; then
-                printf "%s\x00icon\x1f%s\n" "󰄬 $theme (current)" "$THEMES_DIR/$theme/logo.png"
-            else
-                printf "%s\x00icon\x1f%s\n" "󰏗 $theme" "$THEMES_DIR/$theme/logo.png"
-            fi
-        done <<< "$themes" | rofi -dmenu -i -p "Select Theme" -show-icons -markup-rows
+            printf "%s\x00icon\x1f%s\n" "$theme" "$THEMES_DIR/$theme/logo.png"
+        done <<< "$themes" | rofi -dmenu -i -p "" -show-icons -theme themes.rasi
     )
-   
+
     if [[ -n "$selected" ]]; then
-        # Extract theme name (remove icon and "(current)" suffix)
-        theme_name=$(echo "$selected" | sed 's/^[^ ]* //' | sed 's/ (current)$//')
-       
-        # Apply the selected theme
-        apply_theme "$theme_name"
+        apply_theme "$selected"
     fi
 }
 # Run main function

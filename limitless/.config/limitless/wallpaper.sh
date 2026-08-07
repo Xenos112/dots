@@ -1,84 +1,55 @@
 #!/usr/bin/env bash
 
-# Wallpaper Selector Script for Xenos Config
-# Fetches and displays wallpapers from current theme in Rofi
+# Wallpaper picker - one horizontal row, images at full height, cover-cropped by width.
 THEMES_DIR="$HOME/.config/limitless/themes"
-# Safe notification function
-send_notification() {
-    if command -v notify-send &> /dev/null && pgrep -x dunst &> /dev/null || pgrep -x mako &> /dev/null; then
-        notify-send "$@" 2>/dev/null
+ROFI_DIR="$HOME/.config/rofi"
+
+# kill any stale rofi instance first (rofi locks prevent new windows)
+if pidof rofi >/dev/null; then
+    pkill rofi
+    sleep 0.2
+fi
+
+CUR_THEME=$(cat "$HOME/.config/limitless/current_theme" 2>/dev/null)
+[[ -z "$CUR_THEME" ]] && CUR_THEME="flexok"
+WALLPAPER_DIR="$THEMES_DIR/$CUR_THEME/wallpapers"
+
+if [[ ! -d "$WALLPAPER_DIR" ]]; then
+    notify-send "Wallpaper" "No wallpapers for theme '$CUR_THEME'" -u critical
+    exit 1
+fi
+
+mapfile -d '' wallpapers < <(find "$WALLPAPER_DIR" -maxdepth 1 -type f \( -iname '*.jpg' -o -iname '*.jpeg' -o -iname '*.png' \) -print0 | sort -z)
+count=${#wallpapers[@]}
+if [[ "$count" -eq 0 ]]; then
+    notify-send "Wallpaper" "No wallpapers found for '$CUR_THEME'" -u critical
+    exit 1
+fi
+
+# generate the picker theme: base design + file-level overrides only
+theme="$ROFI_DIR/wallpaper-picker.rasi"
+tmp_theme=$(mktemp /tmp/wallpaper-picker-XXXXXX.rasi)
+cat > "$tmp_theme" <<EOF
+@import "$theme"
+
+listview {
+    columns: $count;
+}
+EOF
+
+selected=$(
+    for wp in "${wallpapers[@]}"; do
+        printf "%s\x00icon\x1f%s\n" "$(basename "$wp")" "$wp"
+    done | rofi -dmenu -i -show-icons -theme "$tmp_theme"
+)
+rm -f "$tmp_theme"
+
+if [[ -n "$selected" ]]; then
+    selected="$WALLPAPER_DIR/$selected"
+    if command -v awww &> /dev/null; then
+        awww img "$selected"
+        notify-send "Wallpaper" "$(basename "$selected")" -u normal
     else
-        echo "Notification: $1 - $2"
+        notify-send "Wallpaper" "awww not found; wallpaper not applied" -u critical
     fi
-}
-# Get current theme
-get_current_theme() {
-    if [[ -f "$HOME/.config/limitless/current_theme" ]]; then
-        cat "$HOME/.config/limitless/current_theme"
-    else
-        echo "none"
-    fi
-}
-# Apply wallpaper with random transition
-apply_wallpaper() {
-    local wallpaper_path="$1"
-    if [[ -f "$wallpaper_path" ]]; then
-        if command -v awww &> /dev/null; then
-            # List of available transition types
-            transitions=("none" "simple" "left" "right" "top" "bottom" "wipe" "wave" "grow" "center" "any" "outer")
-            # Pick a random transition
-            random_transition=${transitions[$((RANDOM % ${#transitions[@]}))]}
-            awww img --transition-type "$random_transition" "$wallpaper_path"
-            send_notification "Wallpaper Applied" "Selected wallpaper applied with $random_transition transition" -u normal
-            echo "✓ Wallpaper applied: $wallpaper_path with $random_transition transition"
-        else
-            send_notification "Wallpaper Selector" "awww not found; wallpaper not applied" -u critical
-            echo "Warning: awww not found; skipping wallpaper"
-        fi
-    else
-        send_notification "Wallpaper Selector" "Wallpaper file not found!" -u critical
-        exit 1
-    fi
-}
-# Main function
-main() {
-    local current_theme=$(get_current_theme)
-    if [[ "$current_theme" == "none" ]]; then
-        send_notification "Wallpaper Selector" "No current theme set!" -u critical
-        exit 1
-    fi
-   
-    local theme_path="$THEMES_DIR/$current_theme"
-    if [[ ! -d "$theme_path/wallpapers" ]]; then
-        send_notification "Wallpaper Selector" "Wallpapers directory not found for theme '$current_theme'!" -u critical
-        exit 1
-    fi
-   
-    # Get list of wallpapers
-    local wallpapers=$(find "$theme_path/wallpapers" -type f -iregex '.*\.\(jpg\|jpeg\|png\|gif\)' | sort)
-   
-    if [[ -z "$wallpapers" ]]; then
-        send_notification "Wallpaper Selector" "No wallpapers found in $theme_path/wallpapers" -u critical
-        exit 1
-    fi
-   
-    # Show rofi menu with wallpaper thumbnails as icons
-    selected=$(
-        while IFS= read -r wallpaper; do
-            basename=$(basename "$wallpaper")
-            printf "%s\x00icon\x1f%s\n" "$basename" "$wallpaper"
-        done <<< "$wallpapers" | rofi -dmenu -i -p "Select Wallpaper" -show-icons -markup-rows
-    )
-   
-    if [[ -n "$selected" ]]; then
-        # Find the full path based on selected basename
-        local selected_path=$(find "$theme_path/wallpapers" -type f -name "$selected" -print -quit)
-        if [[ -n "$selected_path" ]]; then
-            apply_wallpaper "$selected_path"
-        else
-            send_notification "Wallpaper Selector" "Selected wallpaper not found!" -u critical
-        fi
-    fi
-}
-# Run main function
-main
+fi
