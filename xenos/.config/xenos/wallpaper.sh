@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 
 # Wallpaper picker - one horizontal row, images at full height, cover-cropped by width.
-THEMES_DIR="$HOME/.config/limitless/themes"
+THEMES_DIR="$HOME/.config/xenos/themes"
 ROFI_DIR="$HOME/.config/rofi"
 
 # kill any stale rofi instance first (rofi locks prevent new windows)
@@ -10,7 +10,7 @@ if pidof rofi >/dev/null; then
     sleep 0.2
 fi
 
-CUR_THEME=$(cat "$HOME/.config/limitless/current_theme" 2>/dev/null)
+CUR_THEME=$(cat "$HOME/.config/xenos/current_theme" 2>/dev/null)
 [[ -z "$CUR_THEME" ]] && CUR_THEME="flexok"
 WALLPAPER_DIR="$THEMES_DIR/$CUR_THEME/wallpapers"
 

@@ -1,8 +1,8 @@
 return {
-  "folke/tokyonight.nvim",
+  "rose-pine/neovim",
   lazy = false,
   config = function()
-    require("tokyonight").setup {}
-    vim.cmd [[colorscheme tokyonight-night]]
+    require("rose-pine").setup {}
+    vim.cmd [[colorscheme rose-pine]]
   end
 }

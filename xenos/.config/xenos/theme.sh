@@ -2,7 +2,7 @@
 
 # Theme Selector Script for Xenos Config
 # Manages themes across multiple applications
-THEMES_DIR="$HOME/.config/limitless/themes"
+THEMES_DIR="$HOME/.config/xenos/themes"
 ROFI_CONFIG="$HOME/.config/rofi/styles/rofi.rasi"
 NVIM_CONFIG="$HOME/.config/nvim/lua/plugins/theme.lua"
 KITTY_CONFIG="$HOME/.config/kitty/kitty-theme.conf"
@@ -102,7 +102,7 @@ apply_theme() {
     # Apply SwayNC theme (no @import/@define-color support - swap hex values in style.css)
     SWAYNC_STYLE="$HOME/.config/swaync/style.css"
     if [[ -f "$SWAYNC_STYLE" ]]; then
-        cur_theme=$(cat "$HOME/.config/limitless/current_theme" 2>/dev/null)
+        cur_theme=$(cat "$HOME/.config/xenos/current_theme" 2>/dev/null)
         [[ -z "$cur_theme" ]] && cur_theme="catppuccin-mocha"
         old_colors="$THEMES_DIR/$cur_theme/swaync-theme.css"
         if [[ ! -f "$old_colors" ]]; then
@@ -163,8 +163,8 @@ apply_theme() {
     fi
    
     # Save current theme
-    mkdir -p "$HOME/.config/limitless"
-    echo "$theme_name" > "$HOME/.config/limitless/current_theme"
+    mkdir -p "$HOME/.config/xenos"
+    echo "$theme_name" > "$HOME/.config/xenos/current_theme"
    
     # Send notification
     send_notification "Theme Applied" "$theme_name theme applied to $applied applications" -u normal
@@ -172,8 +172,8 @@ apply_theme() {
 
 # Get current theme
 get_current_theme() {
-    if [[ -f "$HOME/.config/limitless/current_theme" ]]; then
-        cat "$HOME/.config/limitless/current_theme"
+    if [[ -f "$HOME/.config/xenos/current_theme" ]]; then
+        cat "$HOME/.config/xenos/current_theme"
     else
         echo "none"
     fi
