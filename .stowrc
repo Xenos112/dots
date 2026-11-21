@@ -13,3 +13,4 @@
 --ignore=^README\.md$
 --ignore=^\.gitignore$
 --ignore=^\.stowrc$
+--ignore=^tmux-sessionizer$

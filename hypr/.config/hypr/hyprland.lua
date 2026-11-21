@@ -25,7 +25,6 @@ hl.config({
 
 hl.gesture({ fingers = 3, direction = "horizontal", action = "workspace" })
 
-hl.device({
-  name = "epic-mouse-v1",
-  sensitivity = -0.5,
-})
+-- Machine-specific settings (mouse, monitors, ...) live in local.lua, which is
+-- not tracked in git.
+pcall(require, "local")

@@ -11,3 +11,6 @@ xenos/.config/xenos/current_theme
 *.swp
 *.swo
 .DS_Store
+
+# Machine-specific Hyprland overrides
+hypr/.config/hypr/local.lua
