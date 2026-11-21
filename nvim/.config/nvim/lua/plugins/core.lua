@@ -19,6 +19,7 @@ return {
           "json",
           "yaml",
           "toml",
+          "rust",
         },
         auto_install = true,
         highlight = { enable = true },

@@ -29,6 +29,7 @@ return {
         "prismals",
         "pyright",
         "oxlint",
+        "rust_analyzer",
       },
     },
   },
@@ -43,8 +44,22 @@ return {
         capabilities = capabilities,
       })
 
+      vim.lsp.config("rust_analyzer", {
+        settings = {
+          ["rust-analyzer"] = {
+            cargo = { allFeatures = true },
+            check = { command = "clippy" },
+            procMacro = { enable = true },
+            inlayHints = {
+              closureReturnTypeHints = { enable = "with_block" },
+              lifetimeElisionHints = { enable = "skip_trivial" },
+            },
+          },
+        },
+      })
+
       local servers = { "ts_ls", "gopls", "tailwindcss", "html", "lua_ls", "eslint", "cssls", "vuels", "prismals",
-        "pyright", "oxlint", "golangci_lint_ls" }
+        "pyright", "oxlint", "golangci_lint_ls", "rust_analyzer" }
       for _, server in ipairs(servers) do
         vim.lsp.enable(server)
       end
@@ -111,6 +126,7 @@ return {
         json = { "prettier" },
         lua = { "stylua" },
         go = { "gofmt" },
+        rust = { "rustfmt" },
         python = { "ruff_format" },
       },
       lint_by_ft = {
