@@ -96,8 +96,9 @@ Wallpapers are set with `awww`. `wallpaper.sh` picks one from the active theme.
 - Neovim installs its language servers through `mason`, not through pacman. The
   Rust toolchain itself (`rustc`, `cargo`, `rustfmt`, `clippy`) comes from the
   `rust` package.
-- TLP is configured by `tlp/00-dots.conf` (performance on AC, power-saver on
-  battery); `install.sh` installs it into `/etc/tlp.d/`.
+- TLP is configured by `tlp/00-dots.conf` (balanced on AC, power-saver on
+  battery); `install.sh` installs it into `/etc/tlp.d/`. TLP does not control
+  the fan — the fan curve is handled by the firmware/EC.
 - `nvim/lazy-lock.json` is committed so plugin versions stay reproducible.
 - Machine-specific Hyprland settings belong in `~/.config/hypr/local.lua`, which
   is ignored by git and loaded if present.

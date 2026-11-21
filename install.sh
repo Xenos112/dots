@@ -192,7 +192,7 @@ msg_info "Installing TLP configuration..."
 sudo mkdir -p /etc/tlp.d
 sudo install -m 0644 "$SCRIPT_DIR/tlp/00-dots.conf" /etc/tlp.d/00-dots.conf
 sudo tlp start || true
-msg_ok "TLP configuration applied (performance on AC, power-saver on battery)"
+msg_ok "TLP configuration applied (balanced on AC, power-saver on battery)"
 
 # ──── Install TPM ──────────────────────────────────────────────────────
 msg_info "Installing TPM (Tmux Plugin Manager)..."
