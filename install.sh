@@ -94,6 +94,8 @@ msg_info "Installing packages... (this may take a while)"
 PACKAGES=(
     # Hyprland & core
     hyprland
+    hyprlock
+    hypridle
     xdg-desktop-portal-hyprland
     xdg-desktop-portal-gtk
     waybar
@@ -118,6 +120,7 @@ PACKAGES=(
     tlp
     tlp-rdw
     wl-clipboard
+    cliphist
     xdg-user-dirs
     oh-my-posh-bin
     # Audio / network
@@ -147,6 +150,7 @@ PACKAGES=(
     # Apps
     discord
     nautilus
+    wlogout
 )
 
 msg_info "Installing ${#PACKAGES[@]} packages..."
@@ -217,6 +221,7 @@ stow_packages=(
     swaync
     swayosd
     waybar
+    wlogout
     xenos
     zsh
     tmux

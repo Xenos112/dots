@@ -13,6 +13,11 @@ hl.bind(mainMod .. " + P", hl.dsp.window.pseudo())
 hl.bind(mainMod .. " + J", hl.dsp.layout("togglesplit"))
 hl.bind(mainMod .. " + F", hl.dsp.window.fullscreen())
 
+hl.bind(mainMod .. " + L", hl.dsp.exec_cmd("hyprlock"))
+hl.bind(mainMod .. " + SHIFT + Q", hl.dsp.exec_cmd("wlogout"))
+hl.bind(mainMod .. " + SHIFT + V",
+  hl.dsp.exec_cmd("cliphist list | rofi -dmenu -display-columns 2 -p clipboard | cliphist decode | wl-copy"))
+
 
 hl.bind(mainMod .. " + left", hl.dsp.focus({ direction = "l" }))
 hl.bind(mainMod .. " + right", hl.dsp.focus({ direction = "r" }))
