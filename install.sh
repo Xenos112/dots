@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# Hyprland + Yay + common packages installer
+# Hyprland + Paru + common packages installer
 # 2025 version - with better UX and safety checks
 
 set -euo pipefail
@@ -34,7 +34,7 @@ cat << "EOF"
 / __  / /_/ / / / / /  __/ /_/ /  / /_/ / ,< /  __/
 /_/ /_/\__,_/_/_/  /\___/\__,_/   \__,_/_/|_|\___/
                /____/
-           Hyprland + Yay installer
+           Hyprland + Paru installer
 EOF
 echo
 
@@ -60,29 +60,29 @@ else
     msg_ok "base-devel & git already installed"
 fi
 
-# ──── Step 2 : Install yay ─────────────────────────────────────────────
-if ! command_exists yay; then
-    msg_info "Installing yay (AUR helper)..."
+# ──── Step 2 : Install paru ────────────────────────────────────────────
+if ! command_exists paru; then
+    msg_info "Installing paru (AUR helper)..."
 
-    YAY_DIR="$HOME/yay-bin-temp"
+    PARU_DIR="$HOME/paru-bin-temp"
 
-    rm -rf "$YAY_DIR" 2>/dev/null || true
-    git clone https://aur.archlinux.org/yay-bin.git "$YAY_DIR" || msg_error "Failed to clone yay-bin"
-    cd "$YAY_DIR" || msg_error "Failed to cd into yay directory"
+    rm -rf "$PARU_DIR" 2>/dev/null || true
+    git clone https://aur.archlinux.org/paru-bin.git "$PARU_DIR" || msg_error "Failed to clone paru-bin"
+    cd "$PARU_DIR" || msg_error "Failed to cd into paru directory"
 
-    makepkg -si --noconfirm --needed || msg_error "Failed to build/install yay"
+    makepkg -si --noconfirm --needed || msg_error "Failed to build/install paru"
 
     cd - >/dev/null
-    rm -rf "$YAY_DIR"
+    rm -rf "$PARU_DIR"
 
-    if ! command_exists yay; then
-        msg_error "yay installation failed - not found in PATH"
+    if ! command_exists paru; then
+        msg_error "paru installation failed - not found in PATH"
     fi
 
-    msg_ok "yay successfully installed!"
+    msg_ok "paru successfully installed!"
 else
-    msg_ok "yay already installed → updating it..."
-    yay -Syu --noconfirm yay || msg_warn "yay update failed, continuing anyway..."
+    msg_ok "paru already installed → updating it..."
+    paru -Syu --noconfirm paru || msg_warn "paru update failed, continuing anyway..."
 fi
 
 # ──── Step 3 : Install all packages ────────────────────────────────────
@@ -138,10 +138,10 @@ PACKAGES=(
 msg_info "Installing ${#PACKAGES[@]} packages..."
 
 # Split into two calls for better feedback and error isolation
-yay -S --needed --noconfirm "${PACKAGES[@]}" || {
+paru -S --needed --noconfirm "${PACKAGES[@]}" || {
     msg_warn "Some packages failed to install"
     msg_info "Trying again without --noconfirm to see detailed errors..."
-    yay -S --needed "${PACKAGES[@]}"
+    paru -S --needed "${PACKAGES[@]}"
 }
 
 msg_ok "Package installation finished!"
@@ -234,8 +234,8 @@ echo "  2. Select Hyprland session at login screen"
 echo "  3. Configure ~/.config/hypr/hyprland.conf"
 echo
 echo -e "Useful commands:"
-echo "  yay -Syu          → update system + AUR"
-echo "  yay -Rns package  → remove package + unneeded deps"
+echo "  paru -Syu          → update system + AUR"
+echo "  paru -Rns package  → remove package + unneeded deps"
 echo "  zoxide init       → don't forget to add to your shell config!"
 echo
 
