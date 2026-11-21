@@ -95,6 +95,7 @@ PACKAGES=(
     # Hyprland & core
     hyprland
     xdg-desktop-portal-hyprland
+    xdg-desktop-portal-gtk
     waybar
     kitty
     bibata-cursor-theme-bin
