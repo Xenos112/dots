@@ -10,6 +10,17 @@
 
 set -uo pipefail
 
+# Generated files must be real files. With a folded stow layout (~/.config/hypr
+# being a symlink into the repo) writing them would modify the dotfiles repo.
+for dir in "$HOME/.config/hypr" "$HOME/.config/kitty" "$HOME/.config/nvim" \
+    "$HOME/.config/rofi" "$HOME/.config/waybar" "$HOME/.config/swaync"; do
+    if [[ -L "$dir" ]]; then
+        echo "Warning: $dir is a folded stow symlink." >&2
+        echo "Run install.sh (or 'stow --restow <package>' in the dots repo) first." >&2
+        break
+    fi
+done
+
 THEMES_DIR="${XDG_CONFIG_HOME:-$HOME/.config}/xenos/themes"
 ROFI_DIR="${XDG_CONFIG_HOME:-$HOME/.config}/rofi"
 STATE_DIR="${XDG_STATE_HOME:-$HOME/.local/state}/xenos"
