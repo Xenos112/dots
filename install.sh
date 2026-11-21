@@ -225,6 +225,23 @@ else
     msg_ok "Dotfiles stowed successfully"
 fi
 
+# ──── Apply the current theme ──────────────────────────────────────────
+# Theme colors are generated files (not stowed), so they must exist before
+# the first login. Keep the existing choice when reinstalling.
+THEME="catppuccin-mocha"
+if [[ -f "$HOME/.local/state/xenos/current_theme" ]]; then
+    THEME=$(<"$HOME/.local/state/xenos/current_theme")
+elif [[ -f "$HOME/.config/xenos/current_theme" ]]; then
+    THEME=$(<"$HOME/.config/xenos/current_theme")
+fi
+
+msg_info "Applying theme: $THEME"
+if "$HOME/.config/xenos/theme.sh" apply "$THEME"; then
+    msg_ok "Theme applied"
+else
+    msg_warn "Could not apply theme '$THEME' - run ~/.config/xenos/theme.sh manually"
+fi
+
 # ──── Final messages ───────────────────────────────────────────────────
 echo
 msg_ok "Installation completed! 🎉"

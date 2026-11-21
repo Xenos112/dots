@@ -10,7 +10,11 @@ if pidof rofi >/dev/null; then
     sleep 0.2
 fi
 
-CUR_THEME=$(cat "$HOME/.config/xenos/current_theme" 2>/dev/null)
+CUR_THEME=$(cat "${XDG_STATE_HOME:-$HOME/.local/state}/xenos/current_theme" 2>/dev/null)
+if [[ -z "$CUR_THEME" ]]; then
+    # Legacy location used by older versions of theme.sh.
+    CUR_THEME=$(cat "$HOME/.config/xenos/current_theme" 2>/dev/null)
+fi
 [[ -z "$CUR_THEME" ]] && CUR_THEME="flexok"
 WALLPAPER_DIR="$THEMES_DIR/$CUR_THEME/wallpapers"
 
@@ -19,7 +23,7 @@ if [[ ! -d "$WALLPAPER_DIR" ]]; then
     exit 1
 fi
 
-mapfile -d '' wallpapers < <(find "$WALLPAPER_DIR" -maxdepth 1 -type f \( -iname '*.jpg' -o -iname '*.jpeg' -o -iname '*.png' \) -print0 | sort -z)
+mapfile -d '' wallpapers < <(find "$WALLPAPER_DIR" -maxdepth 1 \( -type f -o -type l \) \( -iname '*.jpg' -o -iname '*.jpeg' -o -iname '*.png' \) -print0 | sort -z)
 count=${#wallpapers[@]}
 if [[ "$count" -eq 0 ]]; then
     notify-send "Wallpaper" "No wallpapers found for '$CUR_THEME'" -u critical

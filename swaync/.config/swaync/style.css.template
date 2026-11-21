@@ -16,11 +16,11 @@
 
 #swaync-control-center {
   margin-top: 46px;
-  background-color: #26233a;
-  border: 2px solid #403d52;
+  background-color: @surface0@;
+  border: 2px solid @surface1@;
   border-radius: 16px;
   padding: 12px;
-  box-shadow: 0 8px 32px 4px rgba(0, 0, 0, 0.3);
+  box-shadow: 0 8px 32px 4px @shadow@;
 }
 
 /* ---- floating notifications ---- */
@@ -30,20 +30,20 @@
 }
 
 .notification {
-  background-color: #26233a;
-  border: 2px solid #403d52;
+  background-color: @surface0@;
+  border: 2px solid @surface1@;
   border-radius: 16px;
   padding: 12px 16px;
-  box-shadow: 0 8px 32px 4px rgba(0, 0, 0, 0.3);
+  box-shadow: 0 8px 32px 4px @shadow@;
   transition: all 0.3s ease-out;
 }
 
 .notification:hover {
-  border-color: #9ccfd8;
+  border-color: @blue@;
 }
 
 .notification.critical {
-  border-color: #eb6f92;
+  border-color: @red@;
 }
 
 .notification .notification-icon {
@@ -55,21 +55,21 @@
 }
 
 .notification label.title {
-  color: #e0def4;
+  color: @text@;
   font-weight: 700;
 }
 
 .notification label.time {
-  color: #6e6a86;
+  color: @overlay0@;
   font-size: 12px;
 }
 
 .notification label.summary {
-  color: #e0def4;
+  color: @text@;
 }
 
 .notification label.body {
-  color: #6e6a86;
+  color: @overlay0@;
 }
 
 .notification-action-row {
@@ -78,56 +78,56 @@
 }
 
 .notification-action-button {
-  background-color: #191724;
-  border: 2px solid #403d52;
+  background-color: @base@;
+  border: 2px solid @surface1@;
   border-radius: 999px;
-  color: #e0def4;
+  color: @text@;
   padding: 4px 14px;
   transition: all 0.3s ease-out;
 }
 
 .notification-action-button:hover {
-  border-color: #9ccfd8;
-  color: #9ccfd8;
+  border-color: @blue@;
+  color: @blue@;
 }
 
 .close-button {
-  background-color: #191724;
-  border: 2px solid #403d52;
+  background-color: @base@;
+  border: 2px solid @surface1@;
   border-radius: 999px;
-  color: #6e6a86;
+  color: @overlay0@;
   min-width: 24px;
   min-height: 24px;
   transition: all 0.3s ease-out;
 }
 
 .close-button:hover {
-  border-color: #eb6f92;
-  color: #eb6f92;
+  border-color: @red@;
+  color: @red@;
 }
 
 /* ---- grouped notifications ---- */
 .notification-group {
-  background-color: #26233a;
-  border: 2px solid #403d52;
+  background-color: @surface0@;
+  border: 2px solid @surface1@;
   border-radius: 16px;
   padding: 12px 16px;
   margin: 6px 0;
-  box-shadow: 0 8px 32px 4px rgba(0, 0, 0, 0.3);
+  box-shadow: 0 8px 32px 4px @shadow@;
   transition: all 0.3s ease-out;
 }
 
 .notification-group:hover {
-  border-color: #9ccfd8;
+  border-color: @blue@;
 }
 
 .notification-group-header {
-  color: #e0def4;
+  color: @text@;
   font-weight: 700;
 }
 
 .notification-group-header .notification-group-count {
-  color: #6e6a86;
+  color: @overlay0@;
 }
 
 /* ---- control center ---- */
@@ -136,46 +136,46 @@
 }
 
 .control-center-title {
-  color: #e0def4;
+  color: @text@;
   font-size: 15px;
   font-weight: 700;
   padding: 4px 4px 8px 4px;
 }
 
 .control-center-title .clear-all-button {
-  background-color: #191724;
-  border: 2px solid #403d52;
+  background-color: @base@;
+  border: 2px solid @surface1@;
   border-radius: 999px;
-  color: #6e6a86;
+  color: @overlay0@;
   padding: 2px 12px;
   transition: all 0.3s ease-out;
 }
 
 .control-center-title .clear-all-button:hover {
-  border-color: #eb6f92;
-  color: #eb6f92;
+  border-color: @red@;
+  color: @red@;
 }
 
 .control-center-dnd {
-  background-color: #191724;
-  border: 2px solid #403d52;
+  background-color: @base@;
+  border: 2px solid @surface1@;
   border-radius: 999px;
-  color: #e0def4;
+  color: @text@;
   padding: 4px 14px;
   margin-bottom: 10px;
   transition: all 0.3s ease-out;
 }
 
 .control-center-dnd:hover {
-  border-color: #9ccfd8;
+  border-color: @blue@;
 }
 
 .control-center-dnd label {
-  color: #e0def4;
+  color: @text@;
 }
 
 .control-center-dnd slider {
-  background: #9ccfd8;
+  background: @blue@;
   border-radius: 999px;
 }
 
@@ -184,7 +184,7 @@
 }
 
 .control-center-list .empty-placeholder {
-  color: #6e6a86;
+  color: @overlay0@;
 }
 
 .control-center-list .notification-group {

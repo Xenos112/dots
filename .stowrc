@@ -3,8 +3,13 @@
 
 --target=$HOME
 
+# Do not fold directories into symlinks. Generated files (theme colors, state)
+# live next to stowed files, so each directory must be a real directory.
+--no-folding
+
 # Ignore repo-level files that shouldn't be stowed
 --ignore=^\.git
 --ignore=^install\.sh$
 --ignore=^README\.md$
+--ignore=^\.gitignore$
 --ignore=^\.stowrc$
