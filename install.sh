@@ -22,6 +22,8 @@ command_exists() {
     command -v "$1" >/dev/null 2>&1
 }
 
+SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+
 # ──── Main ─────────────────────────────────────────────────────────────
 
 clear
@@ -145,8 +147,12 @@ yay -S --needed --noconfirm "${PACKAGES[@]}" || {
 msg_ok "Package installation finished!"
 
 # ──── Install Zsh ──────────────────────────────────────────────────────
-chsh -s $(which zsh)
-msg_ok "Zsh Have Been Installed"
+if command_exists zsh; then
+    chsh -s "$(command -v zsh)"
+    msg_ok "Default shell changed to Zsh"
+else
+    msg_warn "zsh not found - skipping default shell change"
+fi
 
 
 # ──── Enable TLP ───────────────────────────────────────────────────────
@@ -157,7 +163,7 @@ msg_ok "TLP service enabled"
 # ──── Enable Preload ───────────────────────────────────────────────────────
 msg_info "Enabling Preload service..."
 systemctl enable preload.service
-msg_ok "TLP service enabled"
+msg_ok "Preload service enabled"
 
 # ──── Install TPM ──────────────────────────────────────────────────────
 msg_info "Installing TPM (Tmux Plugin Manager)..."
@@ -170,36 +176,54 @@ fi
 
 # ──── Install Tmux Sessionizer ──────────────────────────────────────────────────────
 msg_info "Installing Tmux Sessionizer..."
-cp ./tmux-sessionizer ~/.local/bin/tmux-sessionizer
+mkdir -p "$HOME/.local/bin"
+install -m 755 "$SCRIPT_DIR/tmux-sessionizer" "$HOME/.local/bin/tmux-sessionizer"
+msg_ok "Tmux Sessionizer installed"
 
 # ──── Stow dotfiles ────────────────────────────────────────────────────
 msg_info "Stowing dotfiles..."
 
-DOTFILES_DIR="$(cd "$(dirname "$0")" && pwd)"
-cd "$DOTFILES_DIR" || msg_error "Failed to cd into dotfiles directory"
+cd "$SCRIPT_DIR" || msg_error "Failed to cd into dotfiles directory"
 
-# Stow all packages
+if ! command_exists stow; then
+    msg_error "stow is not installed - cannot stow dotfiles"
+fi
+
+# .stowrc handles the target ($HOME) and ignored files
 stow_packages=(
     hypr
     kitty
     nvim
-    rofi
-    waybar
-    foot
     oh-my-posh
+    rofi
+    swaync
+    swayosd
+    waybar
     xenos
     zsh
     tmux
 )
 
+stow_failed=()
 for package in "${stow_packages[@]}"; do
-    if [[ -d "$package" ]]; then
-        stow -t "$HOME" "$package" || msg_warn "Failed to stow $package"
+    if [[ ! -d "$package" ]]; then
+        msg_warn "Skipping missing package: $package"
+        continue
+    fi
+
+    if stow --restow "$package"; then
         msg_ok "Stowed $package"
+    else
+        msg_warn "Failed to stow $package"
+        stow_failed+=("$package")
     fi
 done
 
-msg_ok "Dotfiles stowed successfully"
+if ((${#stow_failed[@]})); then
+    msg_warn "Some packages failed to stow: ${stow_failed[*]}"
+else
+    msg_ok "Dotfiles stowed successfully"
+fi
 
 # ──── Final messages ───────────────────────────────────────────────────
 echo

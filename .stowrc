@@ -1,12 +1,10 @@
 # Stow configuration for dotfiles
-# This file tells stow to target the home directory
+# Target is the current user's home directory (stow expands environment variables).
 
---target=/home/xenos
---dir=/home/xenos/dots
+--target=$HOME
 
-# Ignore common files that shouldn't be stowed
---ignore=.git
---ignore=.gitignore
---ignore=install.sh
---ignore=README.md
---ignore=.stowrc
+# Ignore repo-level files that shouldn't be stowed
+--ignore=^\.git
+--ignore=^install\.sh$
+--ignore=^README\.md$
+--ignore=^\.stowrc$
