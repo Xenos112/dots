@@ -4,30 +4,38 @@ ZINIT_HOME="${XDG_DATA_HOME:-${HOME}/.local/share}/zinit/zinit.git"
 # Download Zinit, if it's not there yet
 if [ ! -d "$ZINIT_HOME" ]; then
    mkdir -p "$(dirname "$ZINIT_HOME")"
-   git clone https://github.com/zdharma-continuum/zinit.git "$ZINIT_HOME"
+   git clone https://github.com/zdharma-continuum/zinit.git "$ZINIT_HOME" \
+      || echo "zinit: clone failed, starting without plugins" >&2
 fi
 
 # Source/Load zinit
-source "${ZINIT_HOME}/zinit.zsh"
+if [ -r "${ZINIT_HOME}/zinit.zsh" ]; then
+   source "${ZINIT_HOME}/zinit.zsh"
 
-# Add in zsh plugins
-zinit light zsh-users/zsh-syntax-highlighting
-zinit light zsh-users/zsh-completions
-zinit light zsh-users/zsh-autosuggestions
-zinit light Aloxaf/fzf-tab
+   # Add in zsh plugins
+   zinit light zsh-users/zsh-syntax-highlighting
+   zinit light zsh-users/zsh-completions
+   zinit light zsh-users/zsh-autosuggestions
+   zinit light Aloxaf/fzf-tab
 
-# Add in snippets
-zinit snippet OMZL::git.zsh
-zinit snippet OMZP::git
-zinit snippet OMZP::sudo
-zinit snippet OMZP::archlinux
-zinit snippet OMZP::aws
-zinit snippet OMZP::kubectl
-zinit snippet OMZP::kubectx
-zinit snippet OMZP::command-not-found
+   # Add in snippets
+   zinit snippet OMZL::git.zsh
+   zinit snippet OMZP::git
+   zinit snippet OMZP::sudo
+   zinit snippet OMZP::archlinux
+   zinit snippet OMZP::aws
+   zinit snippet OMZP::kubectl
+   zinit snippet OMZP::kubectx
+   zinit snippet OMZP::command-not-found
+fi
 
-# Load completions
-autoload -Uz compinit && compinit
+# Load completions (cached for a day, otherwise every shell rescans $PATH)
+autoload -Uz compinit
+if [[ -n ${ZDOTDIR:-$HOME}/.zcompdump(#qN.mh+24) ]]; then
+   compinit -C
+else
+   compinit
+fi
 
 # History
 HISTSIZE=5000
@@ -53,6 +61,11 @@ zstyle ':fzf-tab:complete:__zoxide_z:*' fzf-preview 'ls --color $realpath'
 alias ls='ls --color'
 alias v='nvim'
 alias lg='lazygit'
+
+# Editor
+export EDITOR=nvim
+export VISUAL=nvim
+export MANPAGER='nvim +Man!'
 
 # Local binaries (install.sh puts tmux-sessionizer here)
 export PATH="$HOME/.local/bin:$PATH"
