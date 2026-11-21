@@ -133,6 +133,8 @@ PACKAGES=(
     # pnpm-bin
     bun
     go
+    # Rust
+    rust
     github-cli
     python
     uv
