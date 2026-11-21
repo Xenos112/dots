@@ -56,9 +56,6 @@ hl.bind("XF86AudioPlay", hl.dsp.exec_cmd("playerctl play-pause"), { locked = tru
 hl.bind("XF86AudioPrev", hl.dsp.exec_cmd("playerctl previous"), { locked = true })
 
 
-hl.bind("Print",
-  hl.dsp.exec_cmd(
-    "grim -g \"$(slurp)\" - | wl-copy && wl-paste > ~/Pictures/Screenshots/Screenshot-$(date +%F_%T).png | dunstify \"Screenshot of the region taken\" -t 1000"))
-hl.bind("SHIFT + Print",
-  hl.dsp.exec_cmd(
-    "grim - | wl-copy && wl-paste > ~/Pictures/Screenshots/Screenshot-$(date +%F_%T).png | dunstify \"Screenshot of whole screen taken\" -t 1000"))
+local screenshot = os.getenv("HOME") .. "/.config/xenos/screenshot.sh"
+hl.bind("Print", hl.dsp.exec_cmd(screenshot .. " region"))
+hl.bind("SHIFT + Print", hl.dsp.exec_cmd(screenshot .. " full"))
