@@ -16,7 +16,7 @@ NC='\033[0m'
 msg_info()  { printf "${BLUE}➜${NC} %s\n" "$*"; }
 msg_ok()    { printf "${GREEN}✓${NC} %s\n" "$*"; }
 msg_warn()  { printf "${YELLOW}⚠ %s${NC}\n" "$*"; }
-msg_error() { printf "${RED}✗ ERROR:${NC} %s\n" "$*" >&2; exit 1; }
+msg_error() { printf "${RED}✗ ERROR:${NC} %b\n" "$*" >&2; exit 1; }
 
 command_exists() {
     command -v "$1" >/dev/null 2>&1
@@ -53,7 +53,10 @@ msg_info "Starting installation... (you will be asked for sudo password few time
 # ──── Step 1 : Install base-devel + git if missing ─────────────────────
 msg_info "Installing base-devel & git (needed for building AUR packages)..."
 
-if ! pacman -Q base-devel git &>/dev/null; then
+# base-devel is a group, so check its tools directly (group membership is not
+# recorded when the packages were installed individually).
+if ! command_exists gcc || ! command_exists make || ! command_exists fakeroot \
+    || ! command_exists pkgconf || ! command_exists git; then
     sudo pacman -S --needed --noconfirm base-devel git || msg_error "Failed to install base-devel & git"
     msg_ok "base-devel & git installed"
 else
@@ -82,7 +85,7 @@ if ! command_exists paru; then
     msg_ok "paru successfully installed!"
 else
     msg_ok "paru already installed → updating it..."
-    paru -Syu --noconfirm paru || msg_warn "paru update failed, continuing anyway..."
+    paru -S --needed --noconfirm paru || msg_warn "paru update failed, continuing anyway..."
 fi
 
 # ──── Step 3 : Install all packages ────────────────────────────────────
@@ -91,6 +94,7 @@ msg_info "Installing packages... (this may take a while)"
 PACKAGES=(
     # Hyprland & core
     hyprland
+    xdg-desktop-portal-hyprland
     waybar
     kitty
     bibata-cursor-theme-bin
@@ -99,8 +103,11 @@ PACKAGES=(
     zen-browser-bin
     swaync
     swayosd
+    awww
     # Fonts
     ttf-jetbrains-mono-nerd
+    ttf-nerd-fonts-symbols
+    noto-fonts-emoji
     # Utils
     brightnessctl
     zoxide
@@ -110,8 +117,12 @@ PACKAGES=(
     tlp
     tlp-rdw
     wl-clipboard
-    preload
+    xdg-user-dirs
     oh-my-posh-bin
+    # Audio / network
+    pavucontrol
+    network-manager-applet
+    qt5ct
     # Bluetooth
     bluez
     bluez-utils
@@ -148,8 +159,13 @@ msg_ok "Package installation finished!"
 
 # ──── Install Zsh ──────────────────────────────────────────────────────
 if command_exists zsh; then
-    chsh -s "$(command -v zsh)"
-    msg_ok "Default shell changed to Zsh"
+    ZSH_PATH="$(command -v zsh)"
+    if [[ "$(basename "$SHELL")" == "zsh" ]]; then
+        msg_ok "Zsh is already the default shell"
+    else
+        chsh -s "$ZSH_PATH"
+        msg_ok "Default shell changed to Zsh"
+    fi
 else
     msg_warn "zsh not found - skipping default shell change"
 fi
@@ -157,13 +173,12 @@ fi
 
 # ──── Enable TLP ───────────────────────────────────────────────────────
 msg_info "Enabling TLP service..."
-systemctl enable tlp.service
+if pacman -Q power-profiles-daemon &>/dev/null; then
+    msg_info "Masking power-profiles-daemon (conflicts with TLP)..."
+    sudo systemctl mask --now power-profiles-daemon.service || true
+fi
+sudo systemctl enable --now tlp.service
 msg_ok "TLP service enabled"
-
-# ──── Enable Preload ───────────────────────────────────────────────────────
-msg_info "Enabling Preload service..."
-systemctl enable preload.service
-msg_ok "Preload service enabled"
 
 # ──── Install TPM ──────────────────────────────────────────────────────
 msg_info "Installing TPM (Tmux Plugin Manager)..."
@@ -204,12 +219,29 @@ stow_packages=(
     tmux
 )
 
+# Existing real files make stow abort, so move them aside first.
+BACKUP_DIR="$HOME/.dotfiles-backup-$(date +%Y%m%d-%H%M%S)"
+
+backup_conflicts() {
+    local package="$1" entry target
+    while IFS= read -r -d '' entry; do
+        target="$HOME/${entry#./}"
+        if [[ -e "$target" && ! -L "$target" ]]; then
+            mkdir -p "$BACKUP_DIR/$(dirname "${entry#./}")"
+            mv "$target" "$BACKUP_DIR/${entry#./}"
+            msg_warn "Backed up existing ${entry#./} → $BACKUP_DIR"
+        fi
+    done < <(cd "$package" && find . \( -type f -o -type l \) -print0)
+}
+
 stow_failed=()
 for package in "${stow_packages[@]}"; do
     if [[ ! -d "$package" ]]; then
         msg_warn "Skipping missing package: $package"
         continue
     fi
+
+    backup_conflicts "$package"
 
     if stow --restow "$package"; then
         msg_ok "Stowed $package"
@@ -245,15 +277,19 @@ fi
 # ──── Final messages ───────────────────────────────────────────────────
 echo
 msg_ok "Installation completed! 🎉"
+if [[ -d "$BACKUP_DIR" ]]; then
+    msg_warn "Previous dotfiles were backed up to $BACKUP_DIR"
+fi
 echo -e "${CYAN}Next recommended steps:${NC}"
 echo "  1. Reboot your system"
 echo "  2. Select Hyprland session at login screen"
-echo "  3. Configure ~/.config/hypr/hyprland.conf"
+echo "  3. Edit ~/.config/hypr/hyprland.lua"
 echo
 echo -e "Useful commands:"
-echo "  paru -Syu          → update system + AUR"
-echo "  paru -Rns package  → remove package + unneeded deps"
-echo "  zoxide init       → don't forget to add to your shell config!"
+echo "  paru -Syu                    → update system + AUR"
+echo "  paru -Rns package            → remove package + unneeded deps"
+echo "  ~/.config/xenos/theme.sh     → switch the color theme"
+echo "  ~/.config/xenos/wallpaper.sh → pick a wallpaper"
 echo
 
 exit 0
