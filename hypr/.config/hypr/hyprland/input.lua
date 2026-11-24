@@ -6,6 +6,7 @@ hl.config({
     kb_options = "",
     kb_rules = "",
     follow_mouse = 1,
+    accel_profile = "flat",
     repeat_rate = 40,
     repeat_delay = 150,
     touchpad = {
